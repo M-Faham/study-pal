@@ -14,7 +14,6 @@
  * - Easier to maintain (changes don't cascade)
  */
 
-import React from 'react'
 import { IQuizQuestion } from '../types/tutorial'
 
 interface QuizQuestionProps {

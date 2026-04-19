@@ -8,7 +8,6 @@
  * smaller focused components makes each one easier to understand and test.
  */
 
-import React from 'react'
 import { PASSING_PERCENTAGE, QUIZ_LABELS } from '../constants/quiz'
 
 interface QuizResultsProps {

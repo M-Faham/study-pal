@@ -7,13 +7,11 @@
  * It doesn't know about:
  * - Solution validation
  * - Hints
- * - Whether code is correct
  * - Submission state
  *
  * This makes it reusable for any code editing scenario.
  */
 
-import React from 'react'
 
 interface CodeEditorProps {
   // The current code the user has written

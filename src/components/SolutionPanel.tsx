@@ -6,7 +6,6 @@
  * Helps user see what they're aiming for.
  */
 
-import React from 'react'
 
 interface SolutionPanelProps {
   // The solution code to display

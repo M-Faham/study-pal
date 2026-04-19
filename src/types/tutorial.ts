@@ -82,8 +82,9 @@ export interface ICodeChallenge {
  * BEST PRACTICE: Discriminated Union Types
  * - Allows functions to accept any content type
  * - TypeScript can narrow type based on 'type' field
- * - Example: if (item.type === 'quiz') { /* TypeScript knows it's IQuiz */ }
+ * - Example: if (item.type === 'quiz') { // TypeScript knows it's IQuiz }
  */
+ 
 export type ITutorialStep = ILesson | IQuiz | ICodeChallenge
 
 /**

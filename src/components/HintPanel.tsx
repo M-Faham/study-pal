@@ -6,7 +6,6 @@
  * Pure presentation logic.
  */
 
-import React from 'react'
 
 interface HintPanelProps {
   // Array of hints to show
