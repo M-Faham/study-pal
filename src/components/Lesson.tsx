@@ -20,6 +20,66 @@ interface LessonProps {
   onComplete: () => void
 }
 
+// Highlights code inside <pre><code>...</code></pre> blocks.
+// Runs only on the trusted HTML from our data files — never on user input.
+// Tokenises a plain-text code string into colored HTML spans.
+// Processes tokens left-to-right so replacements never overlap.
+function tokenize(code: string): string {
+  // Each rule: [regex, className]
+  const rules: [RegExp, string][] = [
+    [/\/\/[^\n]*/,                                                              'code-comment'],
+    [/'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`/,                 'code-string'],
+    [/\b(import|export|from|const|let|var|function|return|new|async|await|if|else|class|interface|type|extends|implements|of|in|for|while|true|false|null|undefined|void)\b/, 'code-keyword'],
+    [/\b\d+\b/,                                                                 'code-number'],
+  ]
+
+  let result = ''
+  let remaining = code
+
+  while (remaining.length > 0) {
+    let earliest: { index: number; match: string; cls: string } | null = null
+
+    for (const [rx, cls] of rules) {
+      const m = rx.exec(remaining)
+      if (m && (earliest === null || m.index < earliest.index)) {
+        earliest = { index: m.index, match: m[0], cls }
+      }
+    }
+
+    if (!earliest) {
+      result += escapeHtml(remaining)
+      break
+    }
+
+    // Append plain text before the match
+    result += escapeHtml(remaining.slice(0, earliest.index))
+    // Append the colored span
+    result += `<span class="${earliest.cls}">${escapeHtml(earliest.match)}</span>`
+    remaining = remaining.slice(earliest.index + earliest.match.length)
+  }
+
+  return result
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
+// Finds every <pre><code>…</code></pre> block, decodes its text, highlights it.
+function highlightCode(html: string): string {
+  return html.replace(
+    /(<pre[^>]*>)<code[^>]*>([\s\S]*?)<\/code>(<\/pre>)/g,
+    (_, open, encoded, close) => {
+      // Decode HTML entities that the browser would normally handle
+      const plain = encoded
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&')
+      return open + '<code>' + tokenize(plain) + '</code>' + close
+    }
+  )
+}
+
 /**
  * BEST PRACTICE: ⚠️ dangerouslySetInnerHTML Warning
  *
@@ -51,8 +111,8 @@ export default function Lesson({ lesson, onComplete }: LessonProps) {
           Content comes from trusted data file.
         */}
         <div
-          className="prose prose-lg max-w-none"
-          dangerouslySetInnerHTML={{ __html: lesson.content }}
+          className="lesson-content"
+          dangerouslySetInnerHTML={{ __html: highlightCode(lesson.content) }}
         />
       </div>
 

@@ -5,3 +5,71 @@
 body {
   @apply bg-gray-50;
 }
+
+/* ── Lesson HTML content styling ─────────────────────────────────────────── */
+.lesson-content {
+  @apply text-gray-700 leading-relaxed;
+}
+
+.lesson-content h2 {
+  @apply text-2xl font-bold text-gray-900 mt-8 mb-3 pb-2 border-b border-gray-200;
+}
+
+.lesson-content h3 {
+  @apply text-lg font-bold text-gray-800 mt-6 mb-2;
+}
+
+.lesson-content p {
+  @apply mb-4 leading-7;
+}
+
+.lesson-content ul {
+  @apply list-disc list-inside mb-4 space-y-1 pl-2;
+}
+
+.lesson-content ol {
+  @apply list-decimal list-inside mb-4 space-y-1 pl-2;
+}
+
+.lesson-content li {
+  @apply leading-7;
+}
+
+.lesson-content pre {
+  @apply bg-gray-900 text-green-300 rounded-xl p-4 overflow-x-auto mb-4 text-sm leading-relaxed;
+}
+
+.lesson-content code {
+  @apply font-mono;
+}
+
+/* inline code (not inside pre) */
+.lesson-content :not(pre) > code {
+  @apply bg-indigo-50 text-indigo-700 text-sm px-1.5 py-0.5 rounded font-mono;
+}
+
+.lesson-content strong {
+  @apply font-semibold text-gray-900;
+}
+
+.lesson-content table {
+  @apply w-full border-collapse mb-4 text-sm;
+}
+
+.lesson-content th {
+  @apply bg-gray-100 text-left font-semibold text-gray-700 px-3 py-2 border border-gray-200;
+}
+
+.lesson-content td {
+  @apply px-3 py-2 border border-gray-200 text-gray-700;
+}
+
+.lesson-content tr:nth-child(even) td {
+  @apply bg-gray-50;
+}
+
+/* ── Code syntax highlighting ─────────────────────────────────────────────── */
+.lesson-content pre .code-comment  { color: #6a9955; font-style: italic; }
+.lesson-content pre .code-string   { color: #ce9178; }
+.lesson-content pre .code-keyword  { color: #569cd6; }
+.lesson-content pre .code-number   { color: #b5cea8; }

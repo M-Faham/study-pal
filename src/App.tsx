@@ -6,7 +6,7 @@
  * All content lives in tutorial components; all layout lives in section data.
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // ── Tutorial components ────────────────────────────────────────────────────
 import HTMLAccessibilityTutorial from './tutorials/HTMLAccessibility'
@@ -15,6 +15,9 @@ import ReactRouterTutorial       from './tutorials/ReactRouter'
 import ReactLocalizationTutorial from './tutorials/ReactLocalization'
 import ReactFormsTutorial        from './tutorials/ReactForms'
 import ReactBestPracticesTutorial from './tutorials/ReactBestPractices'
+import EventLoopTutorial          from './tutorials/EventLoop'
+import RxJSTutorial               from './tutorials/RxJS'
+import ReactAxiosTutorial         from './tutorials/ReactAxios'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -59,10 +62,38 @@ const sections: Section[] = [
         description: 'Controlled inputs, Zod validation, React Hook Form, async submission and UX patterns.',
       },
       {
+        id: 'react-axios',
+        icon: '🌐',
+        title: 'Axios',
+        description: 'Axios instance, interceptors, error handling, cancellation, upload progress and React Query integration.',
+      },
+      {
         id: 'react-best-practices',
         icon: '⭐',
         title: 'Best Practices',
         description: 'Component design, state management, performance, custom hooks and error boundaries.',
+      },
+    ],
+  },
+  {
+    title: '🅰️ Angular',
+    tutorials: [
+      {
+        id: 'rxjs',
+        icon: '🔀',
+        title: 'RxJS',
+        description: 'Observables, Subjects, switchMap, mergeMap, combineLatest, error handling and Angular-specific patterns.',
+      },
+    ],
+  },
+  {
+    title: '🧠 JavaScript',
+    tutorials: [
+      {
+        id: 'event-loop',
+        icon: '⚙️',
+        title: 'Event Loop',
+        description: 'Call stack, Web APIs, microtask & macrotask queues, async/await internals — visualized step by step.',
       },
     ],
   },
@@ -105,12 +136,43 @@ const tutorialComponents: Record<string, React.ReactElement> = {
   'react-best-practices': <ReactBestPracticesTutorial />,
   'html-accessibility':   <HTMLAccessibilityTutorial />,
   'webpack-bundlers':     <WebpackBundlersTutorial />,
+  'react-axios':          <ReactAxiosTutorial />,
+  'event-loop':           <EventLoopTutorial />,
+  'rxjs':                 <RxJSTutorial />,
 }
 
 // ── Component ─────────────────────────────────────────────────────────────
 
 export default function App() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
+
+  // Sync with browser history so the back button returns to the home screen
+  // instead of leaving the app entirely.
+  function openTutorial(id: string) {
+    history.pushState({ tutorialId: id }, '', '#' + id)
+    setSelectedId(id)
+  }
+
+  function goHome() {
+    history.pushState({}, '', location.pathname)
+    setSelectedId(null)
+  }
+
+  useEffect(() => {
+    // Restore state if the page is loaded with a hash (e.g. after a hard refresh)
+    const hash = location.hash.slice(1)
+    if (hash && tutorialComponents[hash]) {
+      history.replaceState({ tutorialId: hash }, '', '#' + hash)
+      setSelectedId(hash)
+    }
+
+    function onPopState(e: PopStateEvent) {
+      setSelectedId(e.state?.tutorialId ?? null)
+    }
+
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
 
   const activeComponent = selectedId ? tutorialComponents[selectedId] : null
 
@@ -128,7 +190,7 @@ export default function App() {
           {/* Back button — only visible inside a tutorial */}
           {selectedId && (
             <button
-              onClick={() => setSelectedId(null)}
+              onClick={goHome}
               className="px-4 py-2 bg-gray-700 text-white text-sm rounded-lg hover:bg-gray-800 transition"
             >
               ← All Tutorials
@@ -156,7 +218,7 @@ export default function App() {
                   {section.tutorials.map(tutorial => (
                     <button
                       key={tutorial.id}
-                      onClick={() => setSelectedId(tutorial.id)}
+                      onClick={() => openTutorial(tutorial.id)}
                       className="bg-white rounded-xl shadow-md p-6 text-left hover:shadow-xl hover:-translate-y-1 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     >
                       <span className="text-4xl">{tutorial.icon}</span>
