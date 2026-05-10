@@ -7,13 +7,79 @@ export const topic: IInterviewTopic = {
   difficulty: 'Tricky',
   targets: ['Angular'],
   keyPoints: [
-    'Change detection: Default checks whole tree; OnPush checks only on input change or async event',
-    'Zone.js monkey-patches async APIs to trigger CD',
-    'Signals give fine-grained reactivity without Zone.js',
-    'CanActivate runs after match; CanMatch prevents route matching entirely',
-    'Lazy loading: loadChildren/loadComponent splits bundle, loaded on demand',
+    'TypeScript = JavaScript + static types; compiles to plain JS; catches errors before runtime',
+    'Observable = lazy, cancellable, multi-value stream; Promise = eager, one-value, not cancellable',
+    'Lifecycle order: constructor → ngOnChanges → ngOnInit → ngAfterViewInit → ngOnDestroy',
+    'Signals give fine-grained reactivity without Zone.js — read with (), write with .set()/.update()',
+    'CanActivate runs after match; CanMatch prevents route matching entirely (lazy module never loads)',
   ],
   cheatSheet: [
+    {
+      concept: 'TypeScript vs JavaScript',
+      explanation: 'TypeScript is a strict superset of JavaScript — any valid JS is valid TS. TypeScript adds static types, interfaces, enums, generics, and access modifiers. It compiles to plain JS. Benefits: catch type errors at compile time, better IDE autocomplete, self-documenting APIs, safe refactoring.',
+      code: `// JavaScript — no type safety
+function add(a, b) { return a + b }
+add(2, '3')  // '23' — no warning
+
+// TypeScript — type error at compile time
+function add(a: number, b: number): number { return a + b }
+add(2, '3')  // ❌ Argument of type 'string' is not assignable to parameter of type 'number'
+
+// TypeScript-only features
+interface User { id: number; name: string }
+type Status = 'active' | 'inactive'
+enum Direction { Up, Down, Left, Right }
+
+// Generics
+function first<T>(arr: T[]): T { return arr[0] }`,
+    },
+    {
+      concept: 'Observable vs Promise',
+      explanation: 'Promise: one async value, eager (starts immediately), not cancellable, no operators. Observable: stream of 0-n values, lazy (starts on subscribe), cancellable (unsubscribe), composable with RxJS operators. Use Promises for single one-shot async ops; Observables for streams, retries, cancellation.',
+      code: `// Promise — eager, one value, not cancellable
+const p = fetch('/api/user')  // starts immediately
+p.then(r => r.json()).then(console.log)
+// Can't cancel — even if component destroyed
+
+// Observable — lazy, multiple values, cancellable
+const obs$ = this.http.get('/api/user')  // does nothing yet
+const sub = obs$.subscribe(console.log)  // starts now
+sub.unsubscribe()  // cancels the HTTP request
+
+// Observable advantages
+this.searchInput$.pipe(
+  debounceTime(300),      // wait for pause
+  switchMap(q => this.http.get('/search?q=' + q)),  // cancel previous
+  retry(3),               // retry on error
+  catchError(() => of([]))
+).subscribe(results => this.results = results)`,
+    },
+    {
+      concept: 'Angular Lifecycle Hooks — Full Order',
+      explanation: 'Hooks run in a fixed order. Know which ones run once vs every CD cycle. ngOnChanges runs before ngOnInit when @Input is present. ngOnDestroy is your cleanup hook — unsubscribe, clear timers.',
+      code: `// Order of execution:
+// 1. constructor()          — DI only, no inputs yet
+// 2. ngOnChanges()          — @Input values set/changed (runs BEFORE ngOnInit, then on each change)
+// 3. ngOnInit()             — safe to use @Input values, call APIs (runs ONCE)
+// 4. ngDoCheck()            — every CD cycle (avoid heavy logic)
+// 5. ngAfterContentInit()   — ng-content projected (runs ONCE)
+// 6. ngAfterContentChecked()— after every projected content check
+// 7. ngAfterViewInit()      — view + children rendered, safe to query DOM (runs ONCE)
+// 8. ngAfterViewChecked()   — after every view check
+// 9. ngOnDestroy()          — cleanup: unsubscribe, clear timers (runs ONCE)
+
+export class MyComponent implements OnInit, OnDestroy {
+  private sub!: Subscription
+
+  ngOnInit() {
+    this.sub = this.service.data$.subscribe(d => this.data = d)
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe()  // prevent memory leak
+  }
+}`,
+    },
     {
       concept: 'SPA vs PWA',
       explanation: 'SPA (Single Page Application): loads once, navigates by swapping components — no full page reload. PWA (Progressive Web App): SPA + service worker + manifest = offline support, installable, push notifications. Every PWA is an SPA; not every SPA is a PWA.',

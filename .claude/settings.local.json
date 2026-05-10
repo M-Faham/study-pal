@@ -11,7 +11,8 @@
       "Bash(grep -n '\\\\${{' d:\\\\Work\\\\study-pal\\\\src\\\\interview\\\\data.ts)",
       "Bash(Get-ChildItem \"d:\\\\Work\\\\study-pal\\\\src\\\\interview\\\\\" | Select-Object Name)",
       "Bash(Get-ChildItem -Path \"d:\\\\Work\\\\study-pal\\\\src\\\\tutorials\\\\\" -File | Select-Object Name)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(grep -n \"^  {$\\\\|id:\" src/data/tutorials/react-axios-data.ts)"
     ]
   }
 }

@@ -7,11 +7,11 @@ export const topic: IInterviewTopic = {
   difficulty: "Tricky",
   targets: ['Angular'],
   keyPoints: [
-    'Change detection: Default checks whole tree; OnPush checks only on input change or async event',
-    'Zone.js monkey-patches async APIs to trigger CD',
-    'Signals give fine-grained reactivity without Zone.js',
-    'CanActivate runs after match; CanMatch prevents route matching entirely',
-    'Lazy loading: loadChildren/loadComponent splits bundle, loaded on demand',
+    'OnPush only re-checks on @Input reference change, DOM event inside component, or async pipe emission',
+    'Mutating an @Input object without changing the reference will NOT trigger OnPush re-check',
+    'trackBy returns a unique key so Angular reuses DOM nodes instead of recreating the whole list',
+    'providedIn: "root" = singleton in root injector; component providers[] = new instance per component',
+    'ngAfterViewInit is the first hook where the rendered DOM is available',
   ],
   cheatSheet: [
     {

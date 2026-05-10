@@ -10,6 +10,7 @@ import { reactHooksLessons, reactHooksQuizzes }   from '../data/tutorials/react-
 import { eventLoopLessons, eventLoopQuizzes }     from '../data/tutorials/event-loop-data'
 import { rxjsLessons, rxjsQuizzes }               from '../data/tutorials/rxjs-data'
 import { webpackBundlersLessons }    from '../data/tutorials/webpack-bundlers-data'
+import { httpStatusCodesLessons, httpStatusCodesQuizzes } from '../data/tutorials/http-status-codes-data'
 
 interface BaseTutorialConfig {
   id: string
@@ -99,6 +100,15 @@ export const tutorialRegistry: TutorialConfig[] = [
     subtitle: 'Call stack, Web APIs, microtasks, macrotasks and async/await internals.',
     lessons: eventLoopLessons,
     quizzes: eventLoopQuizzes,
+  },
+  {
+    id: 'http-status-codes',
+    kind: 'lessons-and-quiz',
+    icon: '📡',
+    title: 'HTTP Status Codes — Complete Guide',
+    subtitle: '2xx success, 3xx redirects, 4xx client errors, 5xx server errors — and how to handle each in a frontend app.',
+    lessons: httpStatusCodesLessons,
+    quizzes: httpStatusCodesQuizzes,
   },
   {
     id: 'rxjs',

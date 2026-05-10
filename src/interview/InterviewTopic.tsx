@@ -49,7 +49,7 @@ function CheatSheet({ topic, onOpenTutorial }: { topic: IInterviewTopic; onOpenT
       {topic.cheatSheet.map((item, i) => (
         <div key={i} className="border-l-2 border-indigo-300 bg-white rounded-xl p-5 shadow-sm">
           <h3 className="font-bold text-gray-900 mb-1">{item.concept}</h3>
-          <p className="text-gray-600 text-sm leading-relaxed">{item.explanation}</p>
+          <p className="text-gray-600 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: item.explanation }} />
           {item.code && <CodeBlock code={item.code} />}
         </div>
       ))}

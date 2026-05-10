@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 
-import LessonsOnlyTutorial     from './components/LessonsOnlyTutorial'
-import LessonsAndQuizTutorial  from './components/LessonsAndQuizTutorial'
-import EventLoopVisualizer     from './components/EventLoopVisualizer'
+import EventLoopVisualizer from './components/EventLoopVisualizer'
+import LessonsAndQuizTutorial from './components/LessonsAndQuizTutorial'
+import LessonsOnlyTutorial from './components/LessonsOnlyTutorial'
+import SearchBar from './components/SearchBar'
+import { allInterviewTopics } from './interview/index'
+import InterviewPrep from './interview/InterviewPrep'
+import { useStreakStore } from './interview/useStreakStore'
 import HTMLAccessibilityTutorial from './tutorials/HTMLAccessibility'
-import SearchBar               from './components/SearchBar'
-import { allInterviewTopics }  from './interview/index'
-import InterviewPrep           from './interview/InterviewPrep'
-import { useStreakStore }       from './interview/useStreakStore'
-import { tutorialById }        from './tutorials/registry'
+import { tutorialById } from './tutorials/registry'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -65,7 +65,8 @@ const sections: Section[] = [
     title: '🌐 Web',
     color: 'border-green-400',
     tutorials: [
-      { id: 'html-accessibility', icon: '♿', title: 'HTML Accessibility', description: 'Semantic HTML, ARIA attributes and accessible form patterns.' },
+      { id: 'html-accessibility',  icon: '♿', title: 'HTML Accessibility',  description: 'Semantic HTML, ARIA attributes and accessible form patterns.' },
+      { id: 'http-status-codes',   icon: '📡', title: 'HTTP Status Codes',   description: '2xx success, 3xx redirects, 4xx client errors, 5xx server errors — and how to handle each in a frontend app.' },
     ],
   },
   {
@@ -284,7 +285,7 @@ export default function App() {
 
               {filteredSections.map(section => (
                 <div key={section.title}>
-                  <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">
+                  <h2 className="text-xs font-bold text-white uppercase tracking-widest mb-4">
                     {section.title}
                   </h2>
 

@@ -7,13 +7,68 @@ export const topic: IInterviewTopic = {
   difficulty: "Core",
   targets: ['Angular', 'React', 'General'],
   keyPoints: [
-    'Always handle loading, error, and empty states',
-    'Axios interceptors for global auth headers + 401 redirect',
-    'Cancel in-flight requests on component unmount — AbortController',
-    'React Query / TanStack Query manages cache, deduplication, background refetch',
-    'Optimistic updates: update UI immediately, rollback on error',
+    '2xx = success (200 OK, 201 Created, 204 No Content); 4xx = client error; 5xx = server error',
+    '401 = not authenticated (redirect to login); 403 = authenticated but forbidden (wrong role)',
+    '422 = validation error (show field errors locally); 429 = rate limited (backoff + retry)',
+    'Axios interceptors handle 401/403/5xx globally — components handle 422 field errors locally',
+    'Cancel in-flight requests on component unmount — AbortController / Axios CancelToken',
   ],
   cheatSheet: [
+    {
+      concept: 'HTTP Status Codes',
+      explanation: '5 ranges: 1xx informational, 2xx success, 3xx redirect, 4xx client error, 5xx server error. Know the key ones: 200 OK, 201 Created, 204 No Content, 301/302 redirect, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable, 429 Rate Limited, 500 Server Error, 503 Unavailable.',
+      code: `// 2xx — Success
+200 OK            // GET, PUT, PATCH — standard success
+201 Created       // POST that creates a resource — return Location header
+204 No Content    // DELETE — success, no body
+
+// 3xx — Redirect (browser/Axios follow automatically)
+301 Moved Permanently  // SEO: update indexed URL
+302 Found              // Temporary redirect
+304 Not Modified       // Browser uses cache — no body sent
+
+// 4xx — Client mistakes (fix the request)
+400 Bad Request        // Malformed JSON, missing required field
+401 Unauthorized       // No/expired token → redirect to /login
+403 Forbidden          // Valid token, wrong role/permissions
+404 Not Found          // Resource doesn't exist → show empty state
+409 Conflict           // Duplicate (email already exists)
+422 Unprocessable      // Validation failed → show field errors
+429 Too Many Requests  // Rate limit → retry after Retry-After header
+
+// 5xx — Server failures (not your fault, handle gracefully)
+500 Internal Server Error  // Generic crash → show retry button
+502 Bad Gateway            // Upstream issue → often during deploys
+503 Service Unavailable    // Down for maintenance
+504 Gateway Timeout        // Upstream timeout → retry with backoff`,
+    },
+    {
+      concept: 'Status-Based Error Handling Strategy',
+      explanation: 'Split error handling between a global interceptor (codes that always have the same response) and local component handlers (codes where the UX depends on context).',
+      code: `// Global interceptor — same response everywhere
+interceptor: {
+  401 → clear token, redirect to /login
+  403 → toast "Permission denied"
+  5xx → toast "Server error", log to Sentry
+  429 → toast "Too many requests, try again in Xs"
+}
+
+// Component-level — context-specific UX
+422 → map error.response.data.errors to form field messages
+404 → show inline empty state with "Create one?" CTA
+409 → show "This email is already in use" inline
+
+// Angular HttpClient example
+this.userService.create(dto).pipe(
+  catchError((err: HttpErrorResponse) => {
+    if (err.status === 422) {
+      this.formErrors = err.error.errors  // field-level errors
+      return EMPTY
+    }
+    return throwError(() => err)  // re-throw for global interceptor
+  })
+).subscribe(user => this.router.navigate(['/users', user.id]))`,
+    },
     {
       concept: "Service Layer Pattern",
       explanation:

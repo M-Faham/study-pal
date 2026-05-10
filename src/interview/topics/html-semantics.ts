@@ -15,6 +15,29 @@ export const topic: IInterviewTopic = {
   ],
   cheatSheet: [
     {
+      concept: 'Semantic HTML — What & Why',
+      explanation: 'Semantic HTML uses elements whose tag name describes the meaning of the content, not just its appearance. Benefits: (1) Accessibility — screen readers use landmarks to navigate. (2) SEO — search engines weight semantic structure. (3) Maintainability — a developer reads the intent without decoding class names.',
+      code: `<!-- Non-semantic — tells you nothing about purpose -->
+<div class="box">
+  <div class="top">My Blog</div>
+  <div class="list">
+    <div class="item">Post 1</div>
+  </div>
+</div>
+
+<!-- Semantic — purpose is self-documenting -->
+<header>
+  <h1>My Blog</h1>
+</header>
+<main>
+  <article>
+    <h2>Post 1</h2>
+    <p>Content...</p>
+  </article>
+</main>
+<footer>© 2025</footer>`,
+    },
+    {
       concept: 'section vs div',
       explanation: '<section> is a semantic landmark — it groups related content with a heading and appears in screen reader navigation. <div> is a generic layout container with no semantic meaning. Use semantic elements whenever the content has a distinct meaning.',
       code: `<!-- ❌ div soup — no semantic meaning -->

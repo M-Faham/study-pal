@@ -7,11 +7,11 @@ export const topic: IInterviewTopic = {
   difficulty: 'Core',
   targets: ['Angular'],
   keyPoints: [
-    'localStorage: persists forever, 5MB, JS-accessible (XSS risk)',
-    'sessionStorage: cleared on tab close, 5MB',
-    'Cookies: 4KB, sent with requests, httpOnly = invisible to JS (XSS-safe)',
-    'Interceptors: clone request (immutable) — never mutate original',
-    'providedIn root = singleton; component providers = isolated instance per component',
+    'localStorage: persists forever, 5MB, JS-accessible (XSS risk) — never store auth tokens here',
+    'Cookies: 4KB, sent with every request, httpOnly = invisible to JS (XSS-safe) — best for auth tokens',
+    'Interceptors: always clone the request — HttpRequest is immutable, mutating throws',
+    'CanActivate: blocks entry | CanDeactivate: blocks exit | CanMatch: prevents match + lazy load',
+    'providedIn root = singleton; component providers[] = new isolated instance per component',
   ],
   cheatSheet: [
     {
@@ -66,6 +66,41 @@ export const routes: Routes = [
       import('./dashboard/dashboard.component').then(c => c.DashboardComponent)
   }
 ]`,
+    },
+    {
+      concept: 'Route Guards — CanActivate, CanDeactivate, CanMatch',
+      explanation: 'CanActivate: blocks navigation TO a route (auth check). CanDeactivate: blocks navigation AWAY from a route (unsaved changes warning). CanMatch: prevents route from matching at all — lazy module never downloads.',
+      code: `// CanActivate — protect entry
+export const authGuard: CanActivateFn = () => {
+  const auth = inject(AuthService)
+  return auth.isLoggedIn() ? true : inject(Router).createUrlTree(['/login'])
+}
+
+// CanDeactivate — protect exit (unsaved changes)
+export const unsavedGuard: CanDeactivateFn<EditComponent> = (component) => {
+  if (component.hasUnsavedChanges()) {
+    return confirm('You have unsaved changes. Leave anyway?')
+  }
+  return true
+}
+
+// CanMatch — prevent loading lazy module entirely
+export const adminGuard: CanMatchFn = () => {
+  return inject(AuthService).hasRole('admin')
+}
+
+// Routes
+{
+  path: 'edit/:id',
+  component: EditComponent,
+  canActivate: [authGuard],
+  canDeactivate: [unsavedGuard],
+},
+{
+  path: 'admin',
+  canMatch: [adminGuard],    // checked BEFORE loading the chunk
+  loadChildren: () => import('./admin/admin.routes')
+}`,
     },
     {
       concept: 'Service: providedIn root vs AppModule vs Component',

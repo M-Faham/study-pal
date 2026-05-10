@@ -7,11 +7,11 @@ export const topic: IInterviewTopic = {
   difficulty: 'Core',
   targets: ['Angular', 'General'],
   keyPoints: [
-    'ESLint catches errors and enforces style before runtime',
-    'i18n = design for multiple languages; l10n = actual translation work',
-    'Profile first with Angular DevTools before optimising anything',
-    'Minification (build tool) + Brotli compression (server) reduce bundle transfer size',
-    'Method calls in templates run every CD cycle — use computed/getter instead',
+    'ESLint catches errors and enforces style before runtime — @angular-eslint for Angular-specific rules',
+    'i18n = design for multiple languages; l10n = actual translation work for a specific locale',
+    'Angular 17+: new control flow (@if/@for/@defer), esbuild by default, stable Signals',
+    'Structure: core (singletons) / shared (dumb components) / features (lazy, self-contained)',
+    'Profile first with Angular DevTools before optimising — measure, don\'t guess',
   ],
   cheatSheet: [
     {
@@ -64,6 +64,55 @@ npx webpack-bundle-analyzer dist/stats.json
 gzip on;
 brotli on;
 brotli_comp_level 6;`,
+    },
+    {
+      concept: "What's New in Angular (v16–v18+)",
+      explanation: 'Angular has shipped major DX and performance improvements each version. Know the headline features for each — interviewers often ask what you\'ve used recently.',
+      code: `// Angular 16 — Signals (Developer Preview)
+signal(), computed(), effect()
+
+// Angular 17 — Stable Signals, new control flow, @defer
+@if (show) { <comp /> } @else { <fallback /> }   // replaces *ngIf
+@for (item of items; track item.id) { ... }        // replaces *ngFor
+@defer (on viewport) { <heavy /> }                 // lazy template blocks
+
+// Angular 17 — esbuild by default (faster builds)
+// angular.json: "builder": "@angular-devkit/build-angular:application"
+
+// Angular 18 — Zoneless (experimental)
+provideZonelessChangeDetection()
+
+// Angular 18 — Required inputs
+@Input({ required: true }) userId!: string
+
+// Angular 19 — Incremental hydration, linked signals
+linkedSignal({ source: this.count, computation: c => c * 2 })`,
+    },
+    {
+      concept: 'My Application Structure',
+      explanation: 'A well-structured Angular app separates concerns by feature, not by type. The classic mistake is grouping all components in one folder and all services in another — this doesn\'t scale.',
+      code: `src/
+├── app/
+│   ├── core/               # singleton services, guards, interceptors
+│   │   ├── auth/
+│   │   ├── interceptors/
+│   │   └── guards/
+│   ├── shared/             # reusable dumb components, pipes, directives
+│   │   ├── components/
+│   │   └── pipes/
+│   ├── features/           # one folder per feature/route
+│   │   ├── dashboard/
+│   │   │   ├── dashboard.component.ts
+│   │   │   ├── dashboard.routes.ts
+│   │   │   └── dashboard.store.ts
+│   │   └── users/
+│   └── app.routes.ts
+└── environments/
+
+// Key principles:
+// - Core: loaded once, never imported into features
+// - Shared: imported by multiple features, stateless
+// - Features: lazy loaded, self-contained, own routes + state`,
     },
     {
       concept: 'Debugging a Slow Angular Application',

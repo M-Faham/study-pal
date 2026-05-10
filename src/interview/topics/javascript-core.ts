@@ -16,7 +16,7 @@ export const topic: IInterviewTopic = {
   cheatSheet: [
     {
       concept: 'var vs let vs const — Scope & Hoisting',
-      explanation: 'var is function-scoped and hoisted with value undefined. let and const are block-scoped and in the Temporal Dead Zone (TDZ) — accessing before declaration throws ReferenceError, not undefined.',
+      explanation: '<strong>var</strong> is <strong>function-scoped</strong> and <strong>hoisted</strong> — the declaration is moved to the top of its function and initialised to <code>undefined</code>, so reading it before the assignment gives you <code>undefined</code>, not an error. <strong>let</strong> and <strong>const</strong> are <strong>block-scoped</strong> and enter the <strong>Temporal Dead Zone (TDZ)</strong> — they are hoisted but not initialised, so accessing them before the declaration throws a <code>ReferenceError</code>. Prefer <code>const</code> by default; use <code>let</code> only when you need to reassign; avoid <code>var</code>.',
       code: `// Hoisting
 console.log(x)  // undefined (var is hoisted, initialized to undefined)
 var x = 5
@@ -35,7 +35,7 @@ let b = 1; let b = 2   // SyntaxError`,
     },
     {
       concept: 'Undeclared vs Undefined vs Null',
-      explanation: 'Undeclared: variable was never declared — ReferenceError on access. Undefined: declared but never assigned a value. Null: explicitly set to "no value" — intentional absence.',
+      explanation: '<strong>Undeclared</strong>: the variable was never defined anywhere — accessing it throws a <code>ReferenceError</code>. Use <code>typeof</code> to safely probe for it without throwing. <strong>Undefined</strong>: the variable exists but was never given a value — JS initialises unassigned variables to <code>undefined</code>. <strong>Null</strong>: the developer explicitly set the value to <code>null</code> to signal intentional absence of an object. Key quirk: <code>typeof null === "object"</code> — a historical JS bug; always check for null with <code>=== null</code>, not <code>typeof</code>.',
       code: `console.log(foo)      // ReferenceError: foo is not defined
 console.log(typeof foo) // "undefined" — typeof is safe for undeclared vars
 
@@ -48,7 +48,7 @@ console.log(typeof baz) // "object" — famous JS quirk`,
     },
     {
       concept: 'Data Types — Primitive vs Non-Primitive',
-      explanation: 'Primitives are immutable and copied by value: string, number, bigint, boolean, undefined, null, symbol. Non-primitives (objects, arrays, functions) are copied by reference.',
+      explanation: '<strong>Primitive types</strong> — <code>string</code>, <code>number</code>, <code>bigint</code>, <code>boolean</code>, <code>undefined</code>, <code>null</code>, <code>symbol</code> — are <strong>immutable</strong> and <strong>copied by value</strong>: assigning to a new variable makes an independent copy. <strong>Non-primitive types</strong> (objects, arrays, functions) are <strong>copied by reference</strong>: the variable holds a pointer to the same object in memory, so mutating through one variable affects all references. This is the source of many accidental mutation bugs — always clone objects with spread or <code>structuredClone()</code> before modifying.',
       code: `// Primitive — copied by value
 let a = 5
 let b = a
@@ -67,7 +67,7 @@ str.toUpperCase()     // returns 'HELLO' but str is still 'hello'`,
     },
     {
       concept: '== vs === and Type Coercion',
-      explanation: '=== (strict equality): no type conversion — values must be same type and value. == (loose equality): converts types first (type coercion), then compares. Always use ===.',
+      explanation: '<strong><code>===</code> (strict equality)</strong> compares type <em>and</em> value with no conversion — two values of different types are always <code>false</code>. <strong><code>==</code> (loose equality)</strong> applies <strong>type coercion</strong> first: JS silently converts one or both operands to match, following a complex set of rules that produce counterintuitive results (<code>[] == false</code> is <code>true</code>, <code>null == undefined</code> is <code>true</code>). Always use <code>===</code> in production. The only safe uses of coercion are intentional conversions like <code>+\'5\'</code> → <code>5</code> or <code>!!value</code> → boolean — and even then, prefer explicit casts like <code>Number()</code> and <code>Boolean()</code> for readability.',
       code: `// Type coercion surprises
 2   == '2'    // true  — string '2' coerced to number
 0   == false  // true  — false coerced to 0
@@ -84,8 +84,33 @@ null == undefined // true  — special rule
 +'5'      // 5    — unary + converts string to number`,
     },
     {
+      concept: 'Redeclare vs Reassign & Mutable vs Immutable',
+      explanation: '<strong>Redeclare</strong> means creating a second variable with the same name in the same scope. <code>var</code> allows this silently; <code>let</code> and <code>const</code> throw a <code>SyntaxError</code>. <strong>Reassign</strong> means changing what a variable points to. <code>const</code> prevents reassignment of the <em>binding</em> — but it does <strong>not</strong> make objects immutable. A <code>const</code> object\'s properties can still be mutated freely. To prevent all mutation, use <code>Object.freeze()</code> (shallow) or deep-clone + freeze recursively. The idiomatic immutability pattern in React and functional code is to return a new object with spread rather than mutate in place.',
+      code: `// Redeclare
+var a = 1; var a = 2    // ✅ fine — var allows redeclaration
+let b = 1; let b = 2    // ❌ SyntaxError
+
+// Reassign
+let x = 1; x = 2        // ✅ fine
+const y = 1; y = 2      // ❌ TypeError: Assignment to constant variable
+
+// const does NOT make objects immutable
+const obj = { name: 'Alice' }
+obj.name = 'Bob'         // ✅ works — obj still points to same reference
+obj = {}                 // ❌ TypeError — can't reassign the binding
+
+// True immutability — Object.freeze()
+const frozen = Object.freeze({ x: 1 })
+frozen.x = 99            // silently ignored (or throws in strict mode)
+console.log(frozen.x)   // 1
+
+// Immutable pattern — return new objects instead of mutating
+const user = { name: 'Alice', age: 30 }
+const updated = { ...user, age: 31 }  // new object, original unchanged`,
+    },
+    {
       concept: 'Prototype Chain & this',
-      explanation: 'Every JS object has a hidden [[Prototype]] link. Property lookup walks the chain until it finds the property or reaches null. this refers to the execution context — the object before the dot, or undefined in strict mode functions.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Prototype Chain</p><p class="mb-3 text-gray-600">Every object has a hidden <code>[[Prototype]]</code> link. Property lookup walks the chain until the property is found or <code>null</code> is reached — that's how <code>dog.speak()</code> resolves even though <code>speak</code> lives on <code>Animal.prototype</code>, not on <code>dog</code> itself.</p><p class="font-semibold text-gray-800 mb-1">this — Regular Functions</p><p class="mb-3 text-gray-600"><code>this</code> is determined at the <strong>call site</strong>. <code>obj.greet()</code> → <code>this = obj</code>. Detach it (<code>const fn = obj.greet; fn()</code>) and <code>this</code> becomes <code>undefined</code> in strict mode or <code>window</code> globally.</p><p class="font-semibold text-gray-800 mb-1">this — Arrow Functions</p><p class="text-gray-600">Arrow functions have no own <code>this</code> — they capture it <strong>lexically</strong> from the enclosing scope at definition time. That's why they're the standard choice for callbacks inside class methods.</p>`,
       code: `// Prototype chain
 function Animal(name) { this.name = name }
 Animal.prototype.speak = function() { return this.name + ' speaks' }
