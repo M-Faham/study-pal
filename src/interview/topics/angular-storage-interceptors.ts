@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: '🔧',
   difficulty: 'Core',
   targets: ['Angular'],
+  keyPoints: [
+    'localStorage: persists forever, 5MB, JS-accessible (XSS risk)',
+    'sessionStorage: cleared on tab close, 5MB',
+    'Cookies: 4KB, sent with requests, httpOnly = invisible to JS (XSS-safe)',
+    'Interceptors: clone request (immutable) — never mutate original',
+    'providedIn root = singleton; component providers = isolated instance per component',
+  ],
   cheatSheet: [
     {
       concept: 'localStorage vs sessionStorage vs Cookies',

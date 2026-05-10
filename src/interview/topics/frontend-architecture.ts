@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🧱",
   difficulty: "Architecture",
   targets: ['Angular', 'React', 'General'],
+  keyPoints: [
+    'Feature folders over layer folders for large apps',
+    'Smart/dumb component split: smart fetches data, dumb renders it',
+    'Barrel files (index.ts) for clean public API per feature',
+    'Micro-frontends: independent deploy of UI slices — adds complexity',
+    'Module boundaries prevent cross-feature coupling',
+  ],
   cheatSheet: [
     {
       concept: "Feature-Based Folder Structure",

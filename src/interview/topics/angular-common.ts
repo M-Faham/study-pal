@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: '💬',
   difficulty: 'Core',
   targets: ['Angular', 'General'],
+  keyPoints: [
+    'ESLint catches errors and enforces style before runtime',
+    'i18n = design for multiple languages; l10n = actual translation work',
+    'Profile first with Angular DevTools before optimising anything',
+    'Minification (build tool) + Brotli compression (server) reduce bundle transfer size',
+    'Method calls in templates run every CD cycle — use computed/getter instead',
+  ],
   cheatSheet: [
     {
       concept: 'What is ESLint?',

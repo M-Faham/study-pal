@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: '🏛️',
   difficulty: 'Architecture',
   targets: ['General', 'Angular', 'TypeScript'],
+  keyPoints: [
+    'SOLID: Single Responsibility, Open/Closed, Liskov, Interface Segregation, Dependency Inversion',
+    'Singleton: one instance — prefer DI over manual singletons',
+    'Observer: subject notifies observers on state change — foundation of RxJS',
+    'MVVM: View binds to ViewModel observables — Angular + React follow this',
+    'DI: depend on abstractions, inject concretions from outside',
+  ],
   cheatSheet: [
     {
       concept: 'SOLID Principles',
@@ -105,6 +112,7 @@ class OrderService {
   spokenAnswer: {
     question: 'Explain the SOLID principles and give a real example of one you\'ve applied.',
     answer: `SOLID is five principles that make object-oriented code maintainable and extensible. Single Responsibility says a class should have one reason to change — if your UserService is also sending emails and generating PDFs, that's three responsibilities and three separate reasons it might need to change. Open-Closed says you should be able to add new behaviour without modifying existing code — you do this with abstractions and polymorphism rather than if-else chains. Liskov Substitution says a subclass should be usable anywhere the parent is expected without breaking the caller. Interface Segregation says don't force a class to implement methods it doesn't need — split fat interfaces into focused ones. Dependency Inversion says depend on abstractions not concrete classes — which is the foundation of Angular's dependency injection system. The one I apply most consciously is Single Responsibility — whenever I find myself writing a service that handles both data fetching and business logic and formatting, I split it. It makes testing much simpler because each class has a narrow scope.`,
+    followUp: `Give me an example of a time when you refactored code from inheritance to composition. What triggered that decision?`,
   },
   traps: [
     {
@@ -137,4 +145,5 @@ class OrderService {
       explanation: 'In MVP the Presenter calls View methods to update the UI explicitly. In MVVM the View binds to observable properties on the ViewModel — when the ViewModel\'s state changes, the View updates automatically via the binding mechanism. Angular\'s templates and React\'s hooks follow MVVM.',
     },
   ],
+  relatedTutorialId: 'react-best-practices',
 }

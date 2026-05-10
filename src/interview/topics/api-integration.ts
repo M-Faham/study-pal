@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🔌",
   difficulty: "Core",
   targets: ['Angular', 'React', 'General'],
+  keyPoints: [
+    'Always handle loading, error, and empty states',
+    'Axios interceptors for global auth headers + 401 redirect',
+    'Cancel in-flight requests on component unmount — AbortController',
+    'React Query / TanStack Query manages cache, deduplication, background refetch',
+    'Optimistic updates: update UI immediately, rollback on error',
+  ],
   cheatSheet: [
     {
       concept: "Service Layer Pattern",

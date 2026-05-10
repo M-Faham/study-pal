@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🛡️",
   difficulty: "Tricky",
   targets: ['General'],
+  keyPoints: [
+    'XSS: sanitize user input, use textContent not innerHTML, strict CSP',
+    'CSRF: SameSite cookie attribute + CSRF tokens for state-changing requests',
+    'SQL injection: parameterised queries only — never string concatenation',
+    'HTTPS everywhere — HSTS header to enforce it',
+    'Least privilege: tokens/keys should have minimum required permissions',
+  ],
   cheatSheet: [
     {
       concept: "XSS — Cross-Site Scripting",

@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: '🏷️',
   difficulty: 'Core',
   targets: ['General'],
+  keyPoints: [
+    'Semantic elements = meaning for screen readers + SEO',
+    'One h1 per page — primary topic signal',
+    'section vs div: section has meaning, div is a container',
+    'id = unique + high specificity; class = reusable + low specificity',
+    'Specificity order: inline > id > class > element',
+  ],
   cheatSheet: [
     {
       concept: 'section vs div',

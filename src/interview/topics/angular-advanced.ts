@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: '🅰️',
   difficulty: 'Tricky',
   targets: ['Angular'],
+  keyPoints: [
+    'Change detection: Default checks whole tree; OnPush checks only on input change or async event',
+    'Zone.js monkey-patches async APIs to trigger CD',
+    'Signals give fine-grained reactivity without Zone.js',
+    'CanActivate runs after match; CanMatch prevents route matching entirely',
+    'Lazy loading: loadChildren/loadComponent splits bundle, loaded on demand',
+  ],
   cheatSheet: [
     {
       concept: 'SPA vs PWA',
@@ -161,6 +168,7 @@ form.value.name   // type: string (not string | null | undefined)`,
   spokenAnswer: {
     question: 'What are Angular Signals and how do they change the reactivity model?',
     answer: `Signals are Angular's answer to fine-grained reactivity. Before signals, Angular relied on Zone.js — a library that monkey-patches all async APIs and triggers change detection across the whole component tree after any async event. It works but it's a blunt instrument. Signals give you a precise reactivity model: a signal holds a value, and any template or computed function that reads from it is automatically subscribed. When the signal changes, only the things that read it are updated — not the whole tree. Computed signals derive a value from other signals and are memoized — they only recompute when their dependencies change. Effects let you run side effects when signal values change. The big architectural implication is that with signals you can eventually opt out of Zone.js entirely, giving you faster and more predictable change detection. In practice I use signals for component-level state where I want precise updates — counters, toggles, form state — while keeping Observables for streams of async events where the full RxJS operator set is valuable.`,
+    followUp: `How do signals compare to RxJS Observables — when would you pick one over the other?`,
   },
   traps: [
     {
@@ -214,4 +222,5 @@ form.value.name   // type: string (not string | null | undefined)`,
       explanation: 'Signals are functions — you call them with () to read the current value. This allows Angular\'s reactivity system to track which signals a template or computed function depends on.',
     },
   ],
+  relatedTutorialId: 'rxjs',
 }

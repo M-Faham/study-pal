@@ -73,3 +73,16 @@ body {
 .lesson-content pre .code-string   { color: #ce9178; }
 .lesson-content pre .code-keyword  { color: #569cd6; }
 .lesson-content pre .code-number   { color: #b5cea8; }
+
+/* ── Scrollbar ────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0f172a; } /* slate-900 */
+::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; } /* slate-600 */
+::-webkit-scrollbar-thumb:hover { background: #64748b; } /* slate-500 */
+
+/* ── Animations ───────────────────────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: fade-up 0.2s ease-out; }

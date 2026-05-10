@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🔐",
   difficulty: "Tricky",
   targets: ['Angular', 'React', 'General'],
+  keyPoints: [
+    'JWT: header.payload.signature — verify signature, check expiry',
+    'httpOnly cookies for tokens: invisible to JS, safe from XSS',
+    'localStorage tokens: vulnerable to XSS — avoid for sensitive auth',
+    'OAuth 2.0: delegate auth to provider; PKCE for SPAs (no client secret)',
+    'Refresh token rotation: short-lived access token + long-lived refresh token',
+  ],
   cheatSheet: [
     {
       concept: "JWT Structure and Verification",

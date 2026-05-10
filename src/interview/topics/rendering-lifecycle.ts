@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🔄",
   difficulty: "Core",
   targets: ['Angular', 'React'],
+  keyPoints: [
+    'React: render → reconcile (diffing) → commit (DOM update)',
+    'Angular: change detection → view update → DOM patch',
+    'useEffect runs after paint; useLayoutEffect runs before paint',
+    'Key prop tells React which list items changed — use stable IDs not index',
+    'Batched state updates in React 18 — fewer re-renders',
+  ],
   cheatSheet: [
     {
       concept: "React Render Cycle",

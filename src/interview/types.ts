@@ -30,12 +30,15 @@ export interface IInterviewTopic {
   difficulty: Difficulty
   targets: InterviewTarget[]
   cheatSheet: ICheatSheetItem[]
+  keyPoints: string[]
   spokenAnswer: {
     question: string
     answer: string
+    followUp?: string
   }
   traps: ITrap[]
   quiz: IInterviewQuestion[]
+  relatedTutorialId?: string
 }
 
 // localStorage-persisted state per topic

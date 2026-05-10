@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🔀",
   difficulty: "Tricky",
   targets: ['Angular'],
+  keyPoints: [
+    'Observable = lazy stream; only runs when subscribed',
+    'switchMap: cancels previous inner observable (HTTP search autocomplete)',
+    'mergeMap: runs all inner observables concurrently (parallel requests)',
+    'concatMap: queues inner observables in order (sequential writes)',
+    'Always unsubscribe to prevent memory leaks — use async pipe or takeUntil',
+  ],
   cheatSheet: [
     {
       concept: "switchMap vs mergeMap vs concatMap vs exhaustMap",
@@ -79,6 +86,7 @@ readonly user$ = this.http.get<User>('/me').pipe(
     question:
       "Walk me through the difference between switchMap, mergeMap, concatMap, and exhaustMap.",
     answer: `All four take each emission from a source Observable and map it to an inner Observable — the difference is what happens when a new emission arrives while the previous inner Observable is still running. switchMap cancels the previous inner Observable and starts a new one, which is why it's the default choice for search — you only care about the result for the latest query. mergeMap keeps all inner Observables running concurrently, so it's good for things like uploading multiple files in parallel where you want maximum throughput and order doesn't matter. concatMap queues them — it waits for each inner Observable to complete before starting the next, which preserves order and is useful for sequential writes or analytics events. exhaustMap is the opposite of switchMap — while an inner Observable is active, it ignores any new outer emissions, which makes it perfect for a login button because you don't want to fire multiple auth requests if the user clicks twice.`,
+    followUp: `Can you walk me through a real bug you've debugged that was caused by choosing the wrong flattening operator?`,
   },
   traps: [
     {
@@ -150,4 +158,5 @@ readonly user$ = this.http.get<User>('/me').pipe(
         "takeUntil(destroy$) automatically completes the subscription when destroy$ emits. You emit from destroy$ in ngOnDestroy. The async pipe and takeUntilDestroyed() (Angular 16+) are equally valid alternatives.",
     },
   ],
+  relatedTutorialId: 'rxjs',
 }

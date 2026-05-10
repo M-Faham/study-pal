@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🔷",
   difficulty: "Tricky",
   targets: ['TypeScript', 'Angular', 'React'],
+  keyPoints: [
+    'Structural typing: types are compatible if shapes match, not names',
+    'any disables type checking; unknown forces you to narrow before use',
+    'Discriminated unions: shared literal field narrows the type in switch/if',
+    'Generics make code reusable while preserving type safety',
+    'never = a value that can never occur; useful for exhaustive checks',
+  ],
   cheatSheet: [
     {
       concept: "Type vs Interface — When to Use Which",
@@ -91,6 +98,7 @@ type Role = typeof roles[number]  // "admin" | "editor" | "viewer"`,
     question:
       "What is the difference between any and unknown, and when should you use each?",
     answer: `any basically turns TypeScript off for that value — you can call any method, access any property, and the compiler just trusts you. It's an escape hatch and should be avoided in production code because it defeats the purpose of TypeScript. unknown is the type-safe alternative for "I don't know what this is yet." TypeScript forces you to narrow the type before you can do anything with it — using typeof, instanceof, or a type guard. The practical places I reach for unknown are: caught error values in catch blocks, because in TypeScript 4.0+ errors are typed as unknown by default, and for raw API responses before I've validated the shape. I never use any except in genuine migration scenarios where I'm adding types to an existing JavaScript file and need a temporary escape hatch.`,
+    followUp: `How do you handle the case where a third-party library has incorrect or missing type definitions?`,
   },
   traps: [
     {

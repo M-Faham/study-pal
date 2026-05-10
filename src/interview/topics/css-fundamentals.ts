@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: '🎨',
   difficulty: 'Core',
   targets: ['General'],
+  keyPoints: [
+    'box-sizing: border-box makes width include padding + border',
+    'position: absolute removes from flow, anchors to nearest non-static ancestor',
+    'Flexbox gap — space between items without affecting their width',
+    'Responsive = fluid reflow; Adaptive = fixed layouts per device',
+    'SCSS nesting max 3 levels to avoid specificity hell',
+  ],
   cheatSheet: [
     {
       concept: 'Box Model',

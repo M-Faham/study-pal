@@ -7,12 +7,13 @@ import MockInterview from './MockInterview'
 import type { TopicProgress } from './types'
 
 interface Props {
-  selectedTopicId: string | null
-  onSelectTopic: (id: string) => void
-  onBack: () => void
+  selectedTopicId:  string | null
+  onSelectTopic:    (id: string) => void
+  onBack:           () => void
+  onOpenTutorial?:  (id: string) => void
 }
 
-export default function InterviewPrep({ selectedTopicId, onSelectTopic, onBack }: Props) {
+export default function InterviewPrep({ selectedTopicId, onSelectTopic, onBack, onOpenTutorial }: Props) {
   const [mockMode, setMockMode] = useState(false)
   const { getTopicState, setProgress, setScore } = useInterviewStore()
 
@@ -25,6 +26,7 @@ export default function InterviewPrep({ selectedTopicId, onSelectTopic, onBack }
       <MockInterview
         topics={allInterviewTopics}
         onDone={() => setMockMode(false)}
+        onSelectTopic={onSelectTopic}
       />
     )
   }
@@ -41,6 +43,7 @@ export default function InterviewPrep({ selectedTopicId, onSelectTopic, onBack }
         onSetProgress={(p: TopicProgress) => setProgress(topic.id, p)}
         onQuizComplete={(score: number) => setScore(topic.id, score)}
         onBack={onBack}
+        onOpenTutorial={onOpenTutorial}
       />
     )
   }

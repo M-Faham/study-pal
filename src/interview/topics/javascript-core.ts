@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: '⚡',
   difficulty: 'Tricky',
   targets: ['General'],
+  keyPoints: [
+    '== coerces types; === never coerces — always use ===',
+    'var = function-scoped + hoisted; let/const = block-scoped + TDZ',
+    'typeof null === "object" — historical bug, check null with === null',
+    'Arrow functions capture lexical this; regular functions bind this at call site',
+    'Primitives copied by value; objects/arrays copied by reference',
+  ],
   cheatSheet: [
     {
       concept: 'var vs let vs const — Scope & Hoisting',
@@ -107,6 +114,7 @@ class Timer {
   spokenAnswer: {
     question: 'Explain type coercion in JavaScript and why == is dangerous.',
     answer: `JavaScript has implicit type coercion — when you use the loose equality operator ==, the engine tries to convert one or both values to the same type before comparing. This produces results that look wrong at first glance: the string "2" equals the number 2, an empty array equals false, null equals undefined. The rules are complex and inconsistent enough that most experienced developers can't reliably predict all of them. The practical consequence is that bugs are hard to spot — a comparison that looks like it's checking whether something is false might also return true for an empty string, zero, or null. Strict equality === never coerces — it returns false if the types differ, period. I always use === in production code. The only time I deliberately lean on coercion is for intentional type conversion — using the unary + operator to convert a string to a number — and even then I'd prefer Number() for clarity.`,
+    followUp: `Explain the event loop in 60 seconds — call stack, microtasks, macrotasks.`,
   },
   traps: [
     {
@@ -157,4 +165,5 @@ class Timer {
       explanation: 'Arrow functions do not have their own this — they inherit it from the surrounding lexical scope at the time they are defined. Inside a class method, the surrounding this is the class instance.',
     },
   ],
+  relatedTutorialId: 'event-loop',
 }

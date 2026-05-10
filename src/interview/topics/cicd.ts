@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🚀",
   difficulty: "Core",
   targets: ['General'],
+  keyPoints: [
+    'CI: run tests + lint + build on every push — catch regressions early',
+    'CD: deploy automatically to staging; manual gate to production',
+    'Feature flags decouple deploy from release',
+    'Blue-green deployment: switch traffic between two identical environments',
+    'Rollback strategy: keep previous build artifact ready to redeploy',
+  ],
   cheatSheet: [
     {
       concept: "CI Pipeline Stages for Frontend",

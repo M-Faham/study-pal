@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "⚡",
   difficulty: "Architecture",
   targets: ['Angular', 'React'],
+  keyPoints: [
+    'OnPush + immutable data = only check component when input reference changes',
+    'trackBy on ngFor prevents destroying/recreating DOM on list changes',
+    'Memoize expensive computations with useMemo/computed signals',
+    'Lazy load routes and heavy components to reduce initial bundle',
+    'Virtual scrolling for large lists — CDK VirtualScrollViewport',
+  ],
   cheatSheet: [
     {
       concept: "OnPush + Immutability — The Foundation",

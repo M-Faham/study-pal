@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🅰️",
   difficulty: "Tricky",
   targets: ['Angular'],
+  keyPoints: [
+    'Change detection: Default checks whole tree; OnPush checks only on input change or async event',
+    'Zone.js monkey-patches async APIs to trigger CD',
+    'Signals give fine-grained reactivity without Zone.js',
+    'CanActivate runs after match; CanMatch prevents route matching entirely',
+    'Lazy loading: loadChildren/loadComponent splits bundle, loaded on demand',
+  ],
   cheatSheet: [
     {
       concept: "Change Detection Strategies",

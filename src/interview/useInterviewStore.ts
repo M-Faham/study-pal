@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import type { InterviewStore, ITopicState, TopicProgress } from './types'
+import { useStreakStore } from './useStreakStore'
 
 const STORAGE_KEY = 'studypal-interview-store'
 
@@ -22,6 +23,7 @@ function defaultState(): ITopicState {
 
 export function useInterviewStore() {
   const [store, setStore] = useState<InterviewStore>(load)
+  const { recordActivity } = useStreakStore()
 
   const getTopicState = useCallback(
     (id: string): ITopicState => store[id] ?? defaultState(),
@@ -30,11 +32,12 @@ export function useInterviewStore() {
 
   const setProgress = useCallback((id: string, progress: TopicProgress) => {
     setStore(prev => {
-      const next = { ...prev, [id]: { ...( prev[id] ?? defaultState()), progress } }
+      const next = { ...prev, [id]: { ...(prev[id] ?? defaultState()), progress } }
       save(next)
       return next
     })
-  }, [])
+    recordActivity()
+  }, [recordActivity])
 
   const setScore = useCallback((id: string, score: number) => {
     setStore(prev => {
@@ -44,7 +47,8 @@ export function useInterviewStore() {
       save(next)
       return next
     })
-  }, [])
+    recordActivity()
+  }, [recordActivity])
 
   return { getTopicState, setProgress, setScore }
 }

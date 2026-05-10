@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🏗️",
   difficulty: "Architecture",
   targets: ['General'],
+  keyPoints: [
+    'Break into services by domain, not layer (not "all APIs in one service")',
+    'API Gateway: single entry point for routing, auth, rate limiting',
+    'Caching layers: browser cache → CDN → server cache → DB cache',
+    'Horizontal scaling: add more instances; vertical: bigger machine',
+    'Design for failure: retries, circuit breakers, fallbacks',
+  ],
   cheatSheet: [
     {
       concept: "Micro-Frontend Architecture",

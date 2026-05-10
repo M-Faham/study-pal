@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🌐",
   difficulty: "Tricky",
   targets: ['General'],
+  keyPoints: [
+    'Critical render path: HTML → DOM, CSS → CSSOM → Render Tree → Layout → Paint',
+    'Reflow (layout recalculation) is expensive — batch DOM writes',
+    'requestAnimationFrame for animations — runs before next paint',
+    'Web Workers run JS off the main thread — no DOM access',
+    'Service Workers intercept fetch — enable offline + PWA',
+  ],
   cheatSheet: [
     {
       concept: "Critical Rendering Path",

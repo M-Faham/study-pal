@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🗄️",
   difficulty: "Architecture",
   targets: ['Angular', 'React'],
+  keyPoints: [
+    'Local state: useState/signals for component-only data',
+    'Shared state: Context/BehaviorSubject for cross-component data',
+    'NgRx/Redux: unidirectional flow — Action → Reducer → State → View',
+    'Selector memoization prevents unnecessary re-renders',
+    'Lift state to the nearest common ancestor, not higher',
+  ],
   cheatSheet: [
     {
       concept: "When to Use Global State",

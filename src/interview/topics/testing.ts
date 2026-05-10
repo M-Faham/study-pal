@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "🧪",
   difficulty: "Core",
   targets: ['Angular', 'React', 'General'],
+  keyPoints: [
+    'Unit tests: fast, isolated, mock dependencies',
+    'Integration tests: real interactions between units, no mocks at boundaries',
+    'E2E tests: full user flow through the browser — slowest, highest confidence',
+    'Test behaviour not implementation — tests should survive refactors',
+    'AAA pattern: Arrange, Act, Assert',
+  ],
   cheatSheet: [
     {
       concept: "Testing Pyramid",

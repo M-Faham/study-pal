@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: '🧬',
   difficulty: 'Core',
   targets: ['General', 'TypeScript'],
+  keyPoints: [
+    '4 pillars: Encapsulation, Abstraction, Inheritance, Polymorphism',
+    'Composition = assemble from small pieces; Inheritance = is-a relationship',
+    'Favour composition — avoids fragile base class problem',
+    'Override = runtime (subclass replaces method); Overload = compile-time (same name, different params)',
+    'Default to private, expose via public API',
+  ],
   cheatSheet: [
     {
       concept: 'OOP vs Procedural',

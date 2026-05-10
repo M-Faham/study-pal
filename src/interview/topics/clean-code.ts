@@ -6,6 +6,13 @@ export const topic: IInterviewTopic = {
   icon: "✨",
   difficulty: "Core",
   targets: ['General'],
+  keyPoints: [
+    'Functions do one thing — if you need "and" in the name, split it',
+    'Names should reveal intent — no abbreviations, no comments to explain variable names',
+    'Avoid deep nesting — early returns flatten the happy path',
+    'DRY: extract repeated logic, but only after the third repetition',
+    'Leave the code better than you found it — Boy Scout Rule',
+  ],
   cheatSheet: [
     {
       concept: "Single Responsibility Principle",
