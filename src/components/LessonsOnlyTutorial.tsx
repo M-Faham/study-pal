@@ -15,8 +15,8 @@
  */
 
 import { useState } from 'react'
-import Lesson from './Lesson'
 import { ILesson } from '../types/tutorial'
+import Lesson from './Lesson'
 
 interface LessonsOnlyTutorialProps {
   /** Large title shown at the top */
@@ -66,7 +66,7 @@ export default function LessonsOnlyTutorial({
 
       {/* ── Header ───────────────────────────────────────────── */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-1">
+        <h1 className="text-3xl font-bold text-white mb-1">
           {icon} {title}
         </h1>
         <p className="text-gray-500 mb-4">{subtitle}</p>

@@ -9,6 +9,7 @@ interface LessonsAndQuizTutorialProps {
   icon: string
   lessons: ILesson[]
   quizzes: IQuiz[]
+  children?: React.ReactNode
 }
 
 export default function LessonsAndQuizTutorial({
@@ -17,6 +18,7 @@ export default function LessonsAndQuizTutorial({
   icon,
   lessons,
   quizzes,
+  children,
 }: LessonsAndQuizTutorialProps) {
   const steps: ITutorialStep[] = [...lessons, ...quizzes].sort((a, b) => a.id - b.id)
   const total = steps.length
@@ -33,7 +35,7 @@ export default function LessonsAndQuizTutorial({
 
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-1">{icon} {title}</h1>
+        <h1 className="text-3xl font-bold text-white mb-1">{icon} {title}</h1>
         <p className="text-gray-500 mb-4">{subtitle}</p>
 
         {/* Progress bar */}
@@ -72,6 +74,9 @@ export default function LessonsAndQuizTutorial({
           </p>
         </div>
       </div>
+
+      {/* Optional extra content (e.g. visualizer) */}
+      {children}
 
       {/* Step content */}
       <div className="bg-white rounded-lg shadow overflow-hidden">

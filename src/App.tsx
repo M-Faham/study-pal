@@ -1,19 +1,14 @@
 import { useEffect, useState } from 'react'
 
-import SearchBar from './components/SearchBar'
-import { allInterviewTopics } from './interview/index'
-import InterviewPrep from './interview/InterviewPrep'
-import { useStreakStore } from './interview/useStreakStore'
-import EventLoopTutorial from './tutorials/EventLoop'
+import LessonsOnlyTutorial     from './components/LessonsOnlyTutorial'
+import LessonsAndQuizTutorial  from './components/LessonsAndQuizTutorial'
+import EventLoopVisualizer     from './components/EventLoopVisualizer'
 import HTMLAccessibilityTutorial from './tutorials/HTMLAccessibility'
-import ReactAxiosTutorial from './tutorials/ReactAxios'
-import ReactBestPracticesTutorial from './tutorials/ReactBestPractices'
-import ReactFormsTutorial from './tutorials/ReactForms'
-import ReactHooksTutorial from './tutorials/ReactHooks'
-import ReactLocalizationTutorial from './tutorials/ReactLocalization'
-import ReactRouterTutorial from './tutorials/ReactRouter'
-import RxJSTutorial from './tutorials/RxJS'
-import WebpackBundlersTutorial from './tutorials/WebpackBundlers'
+import SearchBar               from './components/SearchBar'
+import { allInterviewTopics }  from './interview/index'
+import InterviewPrep           from './interview/InterviewPrep'
+import { useStreakStore }       from './interview/useStreakStore'
+import { tutorialById }        from './tutorials/registry'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -82,17 +77,34 @@ const sections: Section[] = [
   },
 ]
 
-const tutorialComponents: Record<string, React.ReactElement> = {
-  'react-router':         <ReactRouterTutorial />,
-  'react-localization':   <ReactLocalizationTutorial />,
-  'react-forms':          <ReactFormsTutorial />,
-  'react-best-practices': <ReactBestPracticesTutorial />,
-  'html-accessibility':   <HTMLAccessibilityTutorial />,
-  'webpack-bundlers':     <WebpackBundlersTutorial />,
-  'react-hooks':          <ReactHooksTutorial />,
-  'react-axios':          <ReactAxiosTutorial />,
-  'event-loop':           <EventLoopTutorial />,
-  'rxjs':                 <RxJSTutorial />,
+function TutorialPage({ id }: { id: string }) {
+  if (id === 'html-accessibility') return <HTMLAccessibilityTutorial />
+
+  const config = tutorialById[id]
+  if (!config) return null
+
+  if (config.kind === 'lessons-only') {
+    return (
+      <LessonsOnlyTutorial
+        icon={config.icon}
+        title={config.title}
+        subtitle={config.subtitle}
+        lessons={config.lessons}
+      />
+    )
+  }
+
+  return (
+    <LessonsAndQuizTutorial
+      icon={config.icon}
+      title={config.title}
+      subtitle={config.subtitle}
+      lessons={config.lessons}
+      quizzes={config.quizzes}
+    >
+      {id === 'event-loop' && <EventLoopVisualizer />}
+    </LessonsAndQuizTutorial>
+  )
 }
 
 // Which tutorial IDs have a matching interview topic cross-link
@@ -176,7 +188,7 @@ export default function App() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const activeComponent = selectedId && mode === 'learn'
-    ? tutorialComponents[selectedId] ?? null
+    ? <TutorialPage id={selectedId} />
     : null
 
   // Filtered learn sections
