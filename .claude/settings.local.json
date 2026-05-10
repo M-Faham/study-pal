@@ -7,7 +7,9 @@
       "Bash(xargs wc:*)",
       "Bash(ls -1 *.md)",
       "Bash(ls -1 *.md *.json *.html *.ts)",
-      "Bash(grep -E \"\\\\.\\(json|ts|html|md\\)$|gitignore\")"
+      "Bash(grep -E \"\\\\.\\(json|ts|html|md\\)$|gitignore\")",
+      "Bash(grep -n '\\\\${{' d:\\\\Work\\\\study-pal\\\\src\\\\interview\\\\data.ts)",
+      "Bash(Get-ChildItem \"d:\\\\Work\\\\study-pal\\\\src\\\\interview\\\\\" | Select-Object Name)"
     ]
   }
 }
