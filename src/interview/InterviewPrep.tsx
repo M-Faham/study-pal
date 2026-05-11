@@ -4,6 +4,7 @@ import { useInterviewStore } from './useInterviewStore'
 import InterviewHome from './InterviewHome'
 import InterviewTopicView from './InterviewTopic'
 import MockInterview from './MockInterview'
+import CodingChallengesSection from './CodingChallengesSection'
 import type { TopicProgress } from './types'
 
 interface Props {
@@ -14,7 +15,8 @@ interface Props {
 }
 
 export default function InterviewPrep({ selectedTopicId, onSelectTopic, onBack, onOpenTutorial }: Props) {
-  const [mockMode, setMockMode] = useState(false)
+  const [mockMode, setMockMode]     = useState(false)
+  const [codingMode, setCodingMode] = useState(false)
   const { getTopicState, setProgress, setScore } = useInterviewStore()
 
   const storeSnapshot = Object.fromEntries(
@@ -28,6 +30,20 @@ export default function InterviewPrep({ selectedTopicId, onSelectTopic, onBack, 
         onDone={() => setMockMode(false)}
         onSelectTopic={onSelectTopic}
       />
+    )
+  }
+
+  if (codingMode) {
+    return (
+      <div>
+        <button
+          onClick={() => setCodingMode(false)}
+          className="mb-4 text-sm text-slate-400 hover:text-white border border-slate-700 px-3 py-1.5 rounded-lg transition"
+        >
+          ← Back to Topics
+        </button>
+        <CodingChallengesSection />
+      </div>
     )
   }
 
@@ -54,6 +70,7 @@ export default function InterviewPrep({ selectedTopicId, onSelectTopic, onBack, 
       store={storeSnapshot}
       onSelect={onSelectTopic}
       onMockInterview={() => setMockMode(true)}
+      onLiveCoding={() => setCodingMode(true)}
       selectedTopicId={selectedTopicId}
     />
   )

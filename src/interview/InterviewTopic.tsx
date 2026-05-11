@@ -1,47 +1,6 @@
 import { useState, useEffect } from 'react'
 import type { IInterviewTopic, TopicProgress } from './types'
-
-// ── Syntax highlighter ────────────────────────────────────────────────────────
-
-function escapeHtml(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-}
-
-function tokenize(code: string): string {
-  const rules: [RegExp, string][] = [
-    [/\/\/[^\n]*/,                                                              'code-comment'],
-    [/#[^\n]*/,                                                                 'code-comment'],
-    [/'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`/,                 'code-string'],
-    [/\b(import|export|from|const|let|var|function|return|new|async|await|if|else|class|interface|type|extends|implements|of|in|for|while|true|false|null|undefined|void|public|private|readonly)\b/, 'code-keyword'],
-    [/\b\d+\b/,                                                                 'code-number'],
-  ]
-  let result = ''
-  let remaining = code
-  while (remaining.length > 0) {
-    let earliest: { index: number; match: string; cls: string } | null = null
-    for (const [rx, cls] of rules) {
-      const m = rx.exec(remaining)
-      if (m && (earliest === null || m.index < earliest.index)) {
-        earliest = { index: m.index, match: m[0], cls }
-      }
-    }
-    if (!earliest) { result += escapeHtml(remaining); break }
-    result += escapeHtml(remaining.slice(0, earliest.index))
-    result += `<span class="${earliest.cls}">${escapeHtml(earliest.match)}</span>`
-    remaining = remaining.slice(earliest.index + earliest.match.length)
-  }
-  return result
-}
-
-// ── Sub-components ────────────────────────────────────────────────────────────
-
-function CodeBlock({ code }: { code: string }) {
-  return (
-    <pre className="lesson-content bg-gray-900 rounded-xl p-4 overflow-x-auto text-sm leading-relaxed mt-3">
-      <code className="text-green-300" dangerouslySetInnerHTML={{ __html: tokenize(code) }} />
-    </pre>
-  )
-}
+import CodeBlock from '../components/CodeBlock'
 
 function CheatSheet({ topic, onOpenTutorial }: { topic: IInterviewTopic; onOpenTutorial?: (id: string) => void }) {
   return (

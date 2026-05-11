@@ -80,10 +80,11 @@ interface Props {
   store: InterviewStore
   onSelect: (id: string) => void
   onMockInterview: () => void
+  onLiveCoding: () => void
   selectedTopicId: string | null
 }
 
-export default function InterviewHome({ topics, store, onSelect, onMockInterview, selectedTopicId }: Props) {
+export default function InterviewHome({ topics, store, onSelect, onMockInterview, onLiveCoding, selectedTopicId }: Props) {
   const [activeTargets, setActiveTargets] = useState<Set<InterviewTarget>>(new Set())
   const [weakOnly, setWeakOnly]           = useState(false)
   const [sidebarOpen, setSidebarOpen]     = useState(false)
@@ -208,12 +209,20 @@ export default function InterviewHome({ topics, store, onSelect, onMockInterview
       <aside className="hidden md:flex flex-col w-64 shrink-0 bg-slate-900 rounded-2xl overflow-hidden h-[calc(100vh-140px)] sticky top-6">
         <div className="p-3 border-b border-slate-800 flex items-center justify-between">
           <h2 className="font-bold text-white text-sm">🎯 Interview Prep</h2>
-          <button
-            onClick={onMockInterview}
-            className="text-xs px-2 py-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
-          >
-            🎲 Mock
-          </button>
+          <div className="flex gap-1.5">
+            <button
+              onClick={onLiveCoding}
+              className="text-xs px-2 py-1 bg-slate-700 text-slate-200 rounded-lg hover:bg-slate-600 transition"
+            >
+              💻 Code
+            </button>
+            <button
+              onClick={onMockInterview}
+              className="text-xs px-2 py-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+            >
+              🎲 Mock
+            </button>
+          </div>
         </div>
         {sidebar}
       </aside>
@@ -244,10 +253,16 @@ export default function InterviewHome({ topics, store, onSelect, onMockInterview
             ☰ Topics
           </button>
           <button
+            onClick={onLiveCoding}
+            className="px-3 py-2 bg-slate-700 text-white rounded-lg text-sm font-medium"
+          >
+            💻 Live Coding
+          </button>
+          <button
             onClick={onMockInterview}
             className="px-3 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium"
           >
-            🎲 Mock Interview
+            🎲 Mock
           </button>
         </div>
 
