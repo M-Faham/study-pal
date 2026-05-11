@@ -16,7 +16,7 @@ export const topic: IInterviewTopic = {
   cheatSheet: [
     {
       concept: 'Box Model',
-      explanation: 'Every element is a rectangular box: content → padding → border → margin. box-sizing: border-box makes width include padding and border — the standard in modern CSS resets.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">The Four Layers</p><p class="mb-3 text-gray-600">Every element is a rectangular box: <strong>content</strong> → <strong>padding</strong> → <strong>border</strong> → <strong>margin</strong>. Margin is outside the element's own dimensions.</p><p class="font-semibold text-gray-800 mb-1">box-sizing: border-box</p><p class="text-gray-600">The default <code>content-box</code> means <code>width</code> only counts the content — padding and border are added on top. <code>border-box</code> makes <code>width</code> include padding and border. This is why every modern CSS reset applies <code>* { box-sizing: border-box }</code>.</p>`,
       code: `/* Default: content-box — width = content only */
 .box { width: 200px; padding: 20px; border: 2px solid; }
 /* Actual rendered width: 200 + 40 + 4 = 244px */
@@ -28,7 +28,7 @@ export const topic: IInterviewTopic = {
     },
     {
       concept: 'position Values',
-      explanation: 'static (default, in flow), relative (offset from own position, still in flow), absolute (removed from flow, positioned relative to nearest non-static ancestor), fixed (relative to viewport), sticky (relative until threshold, then fixed).',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">In-flow Values</p><p class="mb-3 text-gray-600"><strong><code>static</code></strong> (default): element is in the normal document flow, no offset. <strong><code>relative</code></strong>: stays in flow but can be nudged with <code>top/left</code> — also creates a positioning context for absolute children.</p><p class="font-semibold text-gray-800 mb-1">Out-of-flow Values</p><p class="text-gray-600"><strong><code>absolute</code></strong>: removed from flow, anchors to the nearest non-static ancestor. <strong><code>fixed</code></strong>: anchors to the viewport — stays visible on scroll. <strong><code>sticky</code></strong>: in-flow until it hits its <code>top</code> threshold, then sticks like <code>fixed</code>.</p>`,
       code: `/* relative — still takes up space, children can use it as anchor */
 .parent { position: relative; }
 
@@ -43,7 +43,7 @@ export const topic: IInterviewTopic = {
     },
     {
       concept: 'Responsive vs Adaptive Design',
-      explanation: 'Responsive: one fluid layout that reflows at any viewport width using percentages, flexbox, grid, and media queries. Adaptive: multiple fixed layouts, one served per device class. Responsive is the modern standard.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Responsive</p><p class="mb-3 text-gray-600">One fluid layout that reflows at any viewport width using percentages, flexbox, grid, and media queries. The same HTML adapts to any screen size. This is the modern standard.</p><p class="font-semibold text-gray-800 mb-1">Adaptive</p><p class="text-gray-600">Multiple fixed layouts — one is served per device class (mobile, tablet, desktop). More work to maintain and can't handle every screen size gracefully.</p>`,
       code: `/* Responsive — fluid grid */
 .grid {
   display: grid;
@@ -75,7 +75,7 @@ export const topic: IInterviewTopic = {
     },
     {
       concept: 'Tailwind CSS',
-      explanation: 'Utility-first CSS framework. You compose styles by applying small single-purpose classes directly in HTML. No context-switching between HTML and CSS files. PurgeCSS removes unused classes at build time — tiny production bundles.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Utility-First Approach</p><p class="mb-3 text-gray-600">Compose styles by applying small, single-purpose classes directly in HTML — no context-switching between HTML and CSS files. You never write a class name, you just use utility tokens.</p><p class="font-semibold text-gray-800 mb-1">Production Bundle</p><p class="text-gray-600">PurgeCSS scans your source files at build time and removes any unused classes. The result is a tiny CSS bundle regardless of how many utilities Tailwind ships.</p>`,
       code: `<!-- Traditional CSS -->
 <button class="btn-primary">Save</button>
 .btn-primary { background: #3b82f6; color: white; padding: 8px 16px; border-radius: 8px; }
@@ -87,7 +87,7 @@ export const topic: IInterviewTopic = {
     },
     {
       concept: 'SCSS — Nesting & Mixins',
-      explanation: 'SCSS compiles to CSS. Nesting mirrors HTML structure but deep nesting increases specificity — limit to 3 levels. Mixins are reusable blocks of CSS declarations, optionally parameterised.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Nesting</p><p class="mb-3 text-gray-600">SCSS compiles to plain CSS. Nesting mirrors HTML structure but generates high-specificity selectors — limit to <strong>3 levels</strong> max to avoid specificity wars and tight coupling to markup.</p><p class="font-semibold text-gray-800 mb-1">Mixins</p><p class="text-gray-600">Reusable blocks of CSS declarations, optionally parameterised. Define once with <code>@mixin</code>, include anywhere with <code>@include</code>. Great for responsive breakpoints, flex-center patterns, or themed shadows.</p>`,
       code: `// Nesting — limit to 3 levels
 .card {
   padding: 1rem;

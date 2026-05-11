@@ -16,7 +16,7 @@ export const topic: IInterviewTopic = {
   cheatSheet: [
     {
       concept: '2xx — Success',
-      explanation: '200 OK: standard success for GET/PUT/PATCH. 201 Created: POST that made a new resource — pair with Location header. 204 No Content: success with no body — DELETE or silent updates. 202 Accepted: async job queued, result not ready yet.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Common 2xx Codes</p><p class="mb-3 text-gray-600"><strong>200 OK</strong>: standard success for GET / PUT / PATCH. <strong>201 Created</strong>: POST that made a new resource — always pair with a <code>Location</code> header pointing to the new URL. <strong>204 No Content</strong>: success with no response body — use for DELETE or silent updates. <strong>202 Accepted</strong>: async job queued, result not ready yet — return a <code>jobId</code> for polling.</p><p class="font-semibold text-gray-800 mb-1">Frontend Rule</p><p class="text-gray-600">Match status codes to what actually happened — don't return <code>200</code> for everything. The code tells the client what action was performed <strong>without parsing the body</strong>.</p>`,
       code: `200 OK            // GET /users/1        → { id, name }
 201 Created       // POST /users         → { id, name } + Location: /users/2
 204 No Content    // DELETE /users/1     → (no body)
@@ -24,7 +24,7 @@ export const topic: IInterviewTopic = {
     },
     {
       concept: '3xx — Redirection',
-      explanation: 'Clients follow these automatically. 301 = permanent move (SEO ranking transfers to new URL). 302 = temporary (SEO keeps original URL). 304 = not modified, use cache. 307/308 preserve HTTP method on redirect.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Permanent vs Temporary</p><p class="mb-3 text-gray-600"><strong>301 Moved Permanently</strong>: SEO ranking transfers to the new URL — update bookmarks and indexes. <strong>302 Found</strong>: temporary redirect — the original URL stays indexed. Use 301 for gone-forever moves, 302 for short-term.</p><p class="font-semibold text-gray-800 mb-1">Method Preservation & Cache</p><p class="text-gray-600"><strong>307 / 308</strong>: same as 302 / 301 but guarantee the HTTP method (POST stays POST). <strong>304 Not Modified</strong>: no body — the browser should use its cached copy. Browsers and Axios follow redirects automatically.</p>`,
       code: `301 Moved Permanently   // SEO: transfers page rank to new URL
 302 Found               // SEO: keeps original URL indexed
 304 Not Modified        // Browser uses cached response — no body sent
@@ -33,7 +33,7 @@ export const topic: IInterviewTopic = {
     },
     {
       concept: '4xx — Client Errors',
-      explanation: 'The client sent a bad request. Never retry 4xx automatically — the same request will fail again. Show the user what went wrong and how to fix it.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">The Rule — Never Retry 4xx</p><p class="mb-3 text-gray-600">The client sent a bad request. Retrying the <em>same</em> request will produce the <em>same</em> error — <strong>fix the request first</strong>. Show the user what went wrong and how to correct it.</p><p class="font-semibold text-gray-800 mb-1">Key Codes</p><p class="text-gray-600"><strong>400</strong>: malformed JSON or missing field. <strong>401</strong>: no/expired token → redirect to login. <strong>403</strong>: valid token, wrong role → permission denied toast. <strong>404</strong>: resource missing → empty state. <strong>409</strong>: conflict (duplicate email). <strong>422</strong>: validation failed → map errors to form fields. <strong>429</strong>: rate limited → read <code>Retry-After</code> header.</p>`,
       code: `400 Bad Request        // Malformed JSON, missing field → show validation error
 401 Unauthorized       // No/expired token → redirect to /login
 403 Forbidden          // Valid token, wrong role → "Permission denied" toast
@@ -44,7 +44,7 @@ export const topic: IInterviewTopic = {
     },
     {
       concept: '5xx — Server Errors',
-      explanation: 'The server failed — not the client\'s fault. Show a friendly error and retry with exponential backoff. Log to monitoring so the backend team knows.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Not the Client's Fault</p><p class="mb-3 text-gray-600">The server failed. The client's request was fine — the backend crashed, a dependency was down, or it timed out. Show a friendly error message and <strong>retry with exponential backoff</strong>.</p><p class="font-semibold text-gray-800 mb-1">Always Log to Monitoring</p><p class="text-gray-600">Log 5xx responses to Sentry / Datadog so the backend team is alerted. Key codes: <strong>500</strong> generic crash, <strong>502</strong> upstream issue (common during deploys), <strong>503</strong> down / overloaded, <strong>504</strong> upstream timeout → retry with backoff.</p>`,
       code: `500 Internal Server Error  // Generic crash → toast + Sentry log
 502 Bad Gateway            // Upstream issue → often during deploys
 503 Service Unavailable    // Down/overloaded → maintenance page if persistent
@@ -55,7 +55,7 @@ retry({ count: 3, delay: (_, i) => timer(i * 1000) })  // 1s, 2s, 4s`,
     },
     {
       concept: '401 vs 403 — The Classic Trap',
-      explanation: '401 Unauthorized = "I don\'t know who you are" — authentication is missing or invalid. Action: clear token, redirect to login. 403 Forbidden = "I know who you are but you can\'t do this" — authorization failed. Action: show permission error, do NOT redirect to login.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">401 — Unauthenticated</p><p class="mb-3 text-gray-600">"I don't know who you are." The token is <strong>missing, expired, or invalid</strong>. Action: clear the stored token and redirect to <code>/login</code>.</p><p class="font-semibold text-gray-800 mb-1">403 — Authenticated but Forbidden</p><p class="text-gray-600">"I know who you are, but you can't do this." The user is logged in but <strong>lacks the required role or permission</strong>. Action: show a "Permission denied" message — do <strong>not</strong> redirect to login. Sending the user back to login on a 403 is a UX bug.</p>`,
       code: `// 401 — unauthenticated
 GET /api/profile  (no token or expired token)
 → 401 { message: 'Token expired' }
@@ -68,7 +68,7 @@ GET /api/admin/users  (valid token, user is not admin)
     },
     {
       concept: 'Error Handling Strategy',
-      explanation: 'Split between global interceptor (codes that always mean the same thing) and local component handlers (codes where the UI response depends on context).',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Global Interceptor</p><p class="mb-3 text-gray-600">Handles codes that <strong>always mean the same thing</strong> regardless of context: <code>401</code> → redirect to login, <code>403</code> → permission toast, <code>429</code> → rate limit toast, <code>5xx</code> → generic error toast + Sentry log.</p><p class="font-semibold text-gray-800 mb-1">Component-Level Handler</p><p class="text-gray-600">Handles codes where the <strong>UX depends on context</strong>: <code>422</code> → map field errors to the specific form, <code>404</code> → show inline empty state with a CTA, <code>409</code> → show the specific conflict message. Re-throw after local handling so the interceptor can still observe it.</p>`,
       code: `// Global interceptor handles:
 401 → redirect to /login
 403 → permission denied toast

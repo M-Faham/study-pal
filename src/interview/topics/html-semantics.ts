@@ -16,7 +16,7 @@ export const topic: IInterviewTopic = {
   cheatSheet: [
     {
       concept: 'Semantic HTML — What & Why',
-      explanation: 'Semantic HTML uses elements whose tag name describes the meaning of the content, not just its appearance. Benefits: (1) Accessibility — screen readers use landmarks to navigate. (2) SEO — search engines weight semantic structure. (3) Maintainability — a developer reads the intent without decoding class names.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">What It Is</p><p class="mb-3 text-gray-600">Semantic HTML uses elements whose <strong>tag name describes the meaning</strong> of the content, not just its visual appearance. <code>&lt;article&gt;</code> tells you it's a self-contained piece of content; <code>&lt;div class="article"&gt;</code> tells you nothing.</p><p class="font-semibold text-gray-800 mb-1">Why It Matters</p><p class="text-gray-600"><strong>Accessibility</strong>: screen readers use landmarks (<code>header</code>, <code>nav</code>, <code>main</code>) to navigate the page. <strong>SEO</strong>: search engines weight semantic structure and heading hierarchy. <strong>Maintainability</strong>: a developer reads intent from the markup without decoding class names.</p>`,
       code: `<!-- Non-semantic — tells you nothing about purpose -->
 <div class="box">
   <div class="top">My Blog</div>
@@ -69,7 +69,7 @@ export const topic: IInterviewTopic = {
     },
     {
       concept: 'id vs class',
-      explanation: 'id must be unique per page — used for anchors, JS getElementById, and high-specificity CSS. class is reusable across multiple elements — used for styling and grouping. Never use id for styling components you might reuse.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">id — Unique & High Specificity</p><p class="mb-3 text-gray-600">Must be <strong>unique per page</strong>. Used for anchor links (<code>#section</code>), <code>getElementById</code>, and <code>aria-labelledby</code>. Specificity score <code>0,1,0,0</code> — avoid using for styling components you might reuse.</p><p class="font-semibold text-gray-800 mb-1">class — Reusable & Low Specificity</p><p class="text-gray-600">Reusable across any number of elements. The primary tool for <strong>styling and grouping</strong>. Specificity <code>0,0,1,0</code> — easy to override when needed. Default to classes for all styling.</p>`,
       code: `<!-- id — unique, high specificity (0,1,0,0) -->
 <div id="main-hero">...</div>
 document.getElementById('main-hero')
@@ -80,7 +80,7 @@ document.getElementById('main-hero')
     },
     {
       concept: 'SEO-relevant HTML',
-      explanation: 'Search engines parse HTML structure. Key signals: correct heading hierarchy (one h1 per page), meta description, semantic landmarks, alt text on images, and structured data (schema.org).',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Key Signals</p><p class="mb-3 text-gray-600">Search engines parse HTML structure directly. The strongest signals: <strong>one <code>h1</code> per page</strong> (primary topic), logical <code>h2–h6</code> hierarchy, semantic landmarks, and <code>alt</code> text on all images.</p><p class="font-semibold text-gray-800 mb-1">Meta & Structured Data</p><p class="text-gray-600">The <code>&lt;title&gt;</code> tag and <code>meta name="description"</code> control what appears in search results. <strong>schema.org</strong> structured data (<code>application/ld+json</code>) enables rich results like star ratings, FAQs, and breadcrumbs.</p>`,
       code: `<head>
   <title>Angular Best Practices | StudyPal</title>
   <meta name="description" content="Learn Angular best practices with interactive lessons.">
@@ -94,7 +94,7 @@ document.getElementById('main-hero')
     },
     {
       concept: 'CSS Specificity',
-      explanation: 'The browser resolves conflicting rules by specificity score: inline styles (1,0,0,0) > id (0,1,0,0) > class/attribute/pseudo-class (0,0,1,0) > element/pseudo-element (0,0,0,1). Higher score wins regardless of order.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Specificity Score (highest → lowest)</p><p class="mb-3 text-gray-600"><strong>Inline styles</strong> <code>1,0,0,0</code> → <strong>id</strong> <code>0,1,0,0</code> → <strong>class / attribute / pseudo-class</strong> <code>0,0,1,0</code> → <strong>element / pseudo-element</strong> <code>0,0,0,1</code>. Higher score wins regardless of source order.</p><p class="font-semibold text-gray-800 mb-1">Tiebreaker</p><p class="text-gray-600">When specificity scores are <strong>equal</strong>, the rule that appears <em>later</em> in the stylesheet wins. This is the only time source order matters. Avoid specificity wars by keeping all selectors at the class level — no ids, no <code>!important</code>.</p>`,
       code: `/* Specificity: 0,0,0,1 */
 p { color: black; }
 

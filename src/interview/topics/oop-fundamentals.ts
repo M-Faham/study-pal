@@ -16,7 +16,7 @@ export const topic: IInterviewTopic = {
   cheatSheet: [
     {
       concept: 'OOP vs Procedural',
-      explanation: 'Procedural: code is a sequence of functions operating on shared data. OOP: data and behaviour are bundled into objects. OOP models real-world entities and enables reuse through inheritance and composition.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Procedural</p><p class="mb-3 text-gray-600">Code is a sequence of <strong>functions operating on shared data</strong>. Simple and direct for scripts and small utilities, but state is spread across the codebase and hard to control as it grows.</p><p class="font-semibold text-gray-800 mb-1">OOP</p><p class="text-gray-600"><strong>Data and behaviour are bundled into objects</strong>. Objects model real-world entities with clear ownership of their state. Enables reuse through inheritance and composition, and makes large codebases easier to reason about.</p>`,
       code: `// Procedural — functions + shared data
 function getArea(width, height) { return width * height }
 function getPerimeter(width, height) { return 2 * (width + height) }
@@ -30,7 +30,7 @@ class Rectangle {
     },
     {
       concept: 'The Four Pillars',
-      explanation: 'Encapsulation: hide internal state behind a public API. Abstraction: expose only what callers need. Inheritance: extend a base class to reuse behaviour. Polymorphism: different classes respond to the same interface differently.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Encapsulation</p><p class="mb-2 text-gray-600">Hide internal state behind a <strong>public API</strong>. Callers can't accidentally corrupt private data.</p><p class="font-semibold text-gray-800 mb-1">Abstraction</p><p class="mb-2 text-gray-600">Expose only what callers <em>need</em> — hide the implementation details. Callers depend on the interface, not the internals.</p><p class="font-semibold text-gray-800 mb-1">Inheritance</p><p class="mb-2 text-gray-600">Extend a base class to <strong>reuse behaviour</strong>. Use for genuine "is-a" relationships — a <code>Dog</code> is an <code>Animal</code>.</p><p class="font-semibold text-gray-800 mb-1">Polymorphism</p><p class="text-gray-600">Different classes respond to the <strong>same interface</strong> differently. A function that accepts a <code>Shape</code> works for <code>Circle</code>, <code>Rect</code>, or any other subclass.</p>`,
       code: `// Encapsulation — private state, public API
 class BankAccount {
   private balance = 0
@@ -47,7 +47,7 @@ function printArea(s: Shape) { console.log(s.area()) }  // works for any Shape`,
     },
     {
       concept: 'Composition vs Inheritance',
-      explanation: '"Favour composition over inheritance." Inheritance creates tight coupling — child knows about parent\'s internals. Composition assembles behaviour from small independent pieces, making it easier to swap, test, and reuse.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Inheritance — tight coupling</p><p class="mb-3 text-gray-600">Child classes depend on parent internals. Changing the parent can silently break all children — the <strong>fragile base class problem</strong>. Best for genuine "is-a" type hierarchies.</p><p class="font-semibold text-gray-800 mb-1">Composition — flexible & testable</p><p class="text-gray-600">Assemble behaviour from <strong>small independent pieces</strong>. Each piece can be swapped, mocked in tests, and reused in completely different contexts. The rule: if you're inheriting to <em>reuse</em> rather than to model a type relationship, use composition instead.</p>`,
       code: `// Inheritance — tight coupling
 class Animal { breathe() {} }
 class Bird extends Animal { fly() {} }
@@ -62,7 +62,7 @@ const duck = { ...canBreathe, ...canFly, ...canQuack }`,
     },
     {
       concept: 'Override vs Overload',
-      explanation: 'Override: subclass provides its own implementation of a parent method (runtime polymorphism). Overload: multiple methods with the same name but different parameter signatures (compile-time). TypeScript supports overloads via declaration signatures.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Override — Runtime Polymorphism</p><p class="mb-3 text-gray-600">A subclass provides its <strong>own implementation</strong> of a parent method with the exact same signature. At runtime, the subclass version is called. TypeScript enforces this with the <code>override</code> keyword.</p><p class="font-semibold text-gray-800 mb-1">Overload — Compile-Time</p><p class="text-gray-600">Multiple method signatures for the <strong>same name</strong> with different parameter types or counts. TypeScript supports overloads via declaration signatures above the implementation. The compiler picks the matching signature at the call site.</p>`,
       code: `// Override — same signature, different body
 class Logger { log(msg: string) { console.log(msg) } }
 class FileLogger extends Logger {
@@ -78,7 +78,7 @@ function parse(input: string | number): string | number {
     },
     {
       concept: 'Access Modifiers & Interface vs Class',
-      explanation: 'public (default): accessible everywhere. protected: accessible within the class and subclasses. private: accessible only within the class. Interface: pure contract — no implementation, no runtime cost. Class: contract + implementation + instantiable.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Access Modifiers</p><p class="mb-3 text-gray-600"><strong><code>public</code></strong> (default): accessible everywhere. <strong><code>protected</code></strong>: accessible within the class and subclasses only. <strong><code>private</code></strong>: accessible only within the declaring class. Default to <code>private</code> and expose only what's needed.</p><p class="font-semibold text-gray-800 mb-1">Interface vs Class</p><p class="text-gray-600"><strong>Interface</strong>: pure contract — no implementation, zero runtime cost, only exists at compile time. <strong>Class</strong>: contract + implementation + instantiable. Use an interface when you want to define a shape that multiple classes can implement without sharing code.</p>`,
       code: `interface Serializable {
   serialize(): string   // contract only — no code
 }

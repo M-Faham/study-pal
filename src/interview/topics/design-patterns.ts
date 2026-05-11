@@ -16,7 +16,7 @@ export const topic: IInterviewTopic = {
   cheatSheet: [
     {
       concept: 'SOLID Principles',
-      explanation: 'S: Single Responsibility — one reason to change. O: Open/Closed — open for extension, closed for modification. L: Liskov Substitution — subtypes must be substitutable for their base. I: Interface Segregation — no client forced to depend on methods it doesn\'t use. D: Dependency Inversion — depend on abstractions, not concretions.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">S — Single Responsibility</p><p class="mb-2 text-gray-600">A class should have <strong>one reason to change</strong>. If it handles data fetching, business logic, <em>and</em> formatting — that's three reasons.</p><p class="font-semibold text-gray-800 mb-1">O — Open/Closed</p><p class="mb-2 text-gray-600"><strong>Open for extension, closed for modification</strong>. Add new behaviour via new classes or abstractions — don't modify existing tested code.</p><p class="font-semibold text-gray-800 mb-1">L — Liskov Substitution</p><p class="mb-2 text-gray-600">Subtypes must be <strong>substitutable for their base type</strong> without breaking the caller. If your subclass throws exceptions the parent doesn't, it violates LSP.</p><p class="font-semibold text-gray-800 mb-1">I — Interface Segregation</p><p class="mb-2 text-gray-600">No client should be forced to depend on methods it <strong>doesn't use</strong>. Split fat interfaces into focused ones.</p><p class="font-semibold text-gray-800 mb-1">D — Dependency Inversion</p><p class="text-gray-600"><strong>Depend on abstractions, not concretions</strong>. High-level modules shouldn't know about concrete implementations — inject them. This is the foundation of Angular's DI system.</p>`,
       code: `// S — Single Responsibility
 class UserService  { getUser() {} }      // data
 class UserRenderer { render() {} }       // display — separate concerns
@@ -34,7 +34,7 @@ class UserService {
     },
     {
       concept: 'Observable Pattern',
-      explanation: 'An object (subject) maintains a list of dependents (observers) and notifies them when its state changes. Foundation of RxJS, Angular\'s EventEmitter, and DOM events.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">How It Works</p><p class="mb-3 text-gray-600">A <strong>subject</strong> maintains a list of dependent <strong>observers</strong> and notifies them automatically when its state changes. Observers subscribe and unsubscribe dynamically.</p><p class="font-semibold text-gray-800 mb-1">Where You See It</p><p class="text-gray-600">Foundation of <strong>RxJS Observables</strong>, Angular's <code>EventEmitter</code>, and native DOM events. Every <code>addEventListener</code> call is the Observer pattern.</p>`,
       code: `class EventEmitter<T> {
   private listeners: ((v: T) => void)[] = []
 
@@ -54,7 +54,7 @@ sub.unsubscribe()`,
     },
     {
       concept: 'Singleton Pattern',
-      explanation: 'Ensures a class has exactly one instance and provides a global access point. In Angular, providedIn: "root" services are singletons. The pattern risks tight coupling and is hard to test — prefer DI over manual singletons.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">What It Does</p><p class="mb-3 text-gray-600">Ensures a class has <strong>exactly one instance</strong> and provides a global access point to it. Useful for shared resources like config, loggers, or connection pools.</p><p class="font-semibold text-gray-800 mb-1">The Trap</p><p class="text-gray-600">Manual singletons are <strong>hard to test</strong> (can't inject a mock) and create hidden global state. In Angular, use <code>providedIn: 'root'</code> — the DI system manages the singleton for you and it stays testable.</p>`,
       code: `// Manual singleton — harder to test
 class Config {
   private static instance: Config
@@ -72,7 +72,7 @@ export class ConfigService { }  // Angular guarantees one instance`,
     },
     {
       concept: 'MVC vs MVP vs MVVM',
-      explanation: 'MVC: Controller handles input, updates Model, View renders Model. MVP: Presenter handles all logic, View is passive (updates only when Presenter calls it). MVVM: ViewModel exposes observable state, View binds to it via data binding — Angular and React follow MVVM.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">MVC</p><p class="mb-2 text-gray-600">Controller handles input, updates Model, View renders Model. The View may directly observe the Model.</p><p class="font-semibold text-gray-800 mb-1">MVP</p><p class="mb-2 text-gray-600">Presenter handles all logic and <strong>actively pushes updates</strong> to a passive View. The View only updates when the Presenter tells it to.</p><p class="font-semibold text-gray-800 mb-1">MVVM — Angular & React</p><p class="text-gray-600">ViewModel exposes <strong>observable state</strong>. The View <strong>data-binds</strong> to it and updates automatically when state changes. No imperative push from the ViewModel needed.</p>`,
       code: `// MVVM in Angular
 // ViewModel (component) — exposes observable state
 @Component({...})
@@ -87,7 +87,7 @@ class UserComponent {
     },
     {
       concept: 'Dependency Injection',
-      explanation: 'Instead of creating dependencies inside a class, receive them from outside (via constructor, method, or framework). Decouples classes from their dependencies — makes code testable and modular.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">The Principle</p><p class="mb-3 text-gray-600">Instead of a class <em>creating</em> its dependencies with <code>new</code>, it <strong>receives them from outside</strong> — via constructor, method, or a DI framework. The class declares what it needs; something else provides it.</p><p class="font-semibold text-gray-800 mb-1">Why It Matters</p><p class="text-gray-600">Decouples classes from concrete implementations. In tests, inject a <strong>mock</strong>. In production, inject the real service. Angular's entire DI system is built on this principle — <code>@Injectable</code> + constructor injection.</p>`,
       code: `// ❌ Without DI — tightly coupled, untestable
 class OrderService {
   private db = new DatabaseService()  // hardcoded dependency

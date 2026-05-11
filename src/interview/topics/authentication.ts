@@ -16,8 +16,7 @@ export const topic: IInterviewTopic = {
   cheatSheet: [
     {
       concept: "JWT Structure and Verification",
-      explanation:
-        "A JWT is three Base64Url-encoded parts: Header (algorithm), Payload (claims), Signature. The signature is verified on the server — never trust claims on the client without server validation.",
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Structure</p><p class="mb-3 text-gray-600">A JWT is three <strong>Base64Url-encoded</strong> parts separated by dots: <strong>Header</strong> (algorithm), <strong>Payload</strong> (claims like userId, exp), <strong>Signature</strong> (HMAC of header + payload using the server's secret).</p><p class="font-semibold text-gray-800 mb-1">Client vs Server</p><p class="text-gray-600">You can decode the payload on the client to read claims for display — but this is <strong>not verification</strong>. Any authorization decision must be made on the server, which verifies the signature. A user can tamper with the payload; the server catches it because the signature won't match.</p>`,
       code: `// JWT: header.payload.signature
 // eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjF9.abc123
 
@@ -30,8 +29,7 @@ const payload = JSON.parse(atob(token.split('.')[1]))
     },
     {
       concept: "Token Storage — localStorage vs httpOnly Cookie",
-      explanation:
-        "localStorage tokens are accessible to JavaScript — XSS can steal them. httpOnly cookies are invisible to JavaScript — XSS cannot read them, but CSRF is a risk (mitigate with SameSite=Strict/Lax or CSRF tokens).",
+      explanation: `<p class="font-semibold text-gray-800 mb-1">localStorage — Convenient, XSS Risk</p><p class="mb-3 text-gray-600">Accessible to any JavaScript on the page. An <strong>XSS attack</strong> can read and exfiltrate the token trivially. Never store sensitive auth tokens in localStorage.</p><p class="font-semibold text-gray-800 mb-1">httpOnly Cookie — XSS Safe, CSRF Risk</p><p class="text-gray-600">The <code>HttpOnly</code> flag makes the cookie <strong>invisible to JavaScript</strong> — XSS scripts cannot read it. The browser sends it automatically. Mitigate CSRF with <code>SameSite=Strict</code> or <code>SameSite=Lax</code> plus CSRF tokens for state-changing requests.</p>`,
       code: `// localStorage — convenient but XSS risk
 localStorage.setItem('token', jwt)
 Authorization: Bearer \${token}
@@ -42,8 +40,7 @@ Set-Cookie: token=jwt; HttpOnly; Secure; SameSite=Strict
     },
     {
       concept: "Access Token + Refresh Token Pattern",
-      explanation:
-        "Short-lived access token (15min) sent with every request. Long-lived refresh token (7–30 days) stored securely, used only to get new access tokens. Limits exposure window if access token is leaked.",
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Access Token — Short-Lived</p><p class="mb-3 text-gray-600">Expires in <strong>15 minutes</strong>. Sent as a <code>Bearer</code> header with every API request. Short TTL limits the exposure window if the token is leaked.</p><p class="font-semibold text-gray-800 mb-1">Refresh Token — Long-Lived</p><p class="text-gray-600">Expires in <strong>7–30 days</strong>. Stored in an <code>httpOnly</code> cookie — invisible to JavaScript. Used <em>only</em> to silently obtain a new access token when the current one expires. Never sent to the API directly.</p>`,
       code: `// Access token — short-lived, sent as Bearer
 Authorization: Bearer <access_token>   // expires in 15 min
 
@@ -54,8 +51,7 @@ POST /auth/refresh
     },
     {
       concept: "Route Guards",
-      explanation:
-        "Protect routes that require authentication or specific roles. In Angular: CanActivate / CanActivateFn. In React Router: a wrapper component that redirects if not authenticated.",
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Angular — CanActivateFn</p><p class="mb-3 text-gray-600">A functional guard that runs before navigating to a route. Return <code>true</code> to allow, <code>false</code> to block, or a <code>UrlTree</code> to redirect. Save the intended URL as a query param so the user lands there after login.</p><p class="font-semibold text-gray-800 mb-1">React Router — Wrapper Component</p><p class="text-gray-600">A <code>PrivateRoute</code> wrapper that checks auth state and renders either the protected children or a <code>&lt;Navigate to="/login"&gt;</code>. Role-based guards add an additional role check before rendering.</p>`,
       code: `// Angular functional guard (v15+)
 export const authGuard: CanActivateFn = (route, state) => {
   const auth = inject(AuthService)

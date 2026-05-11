@@ -16,7 +16,7 @@ export const topic: IInterviewTopic = {
   cheatSheet: [
     {
       concept: 'TypeScript vs JavaScript',
-      explanation: 'TypeScript is a strict superset of JavaScript — any valid JS is valid TS. TypeScript adds static types, interfaces, enums, generics, and access modifiers. It compiles to plain JS. Benefits: catch type errors at compile time, better IDE autocomplete, self-documenting APIs, safe refactoring.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Superset of JavaScript</p><p class="mb-3 text-gray-600">Any valid JS is valid TS. TypeScript adds <strong>static types</strong>, interfaces, enums, generics, and access modifiers — then compiles to plain JS. No runtime overhead.</p><p class="font-semibold text-gray-800 mb-1">Why Use It</p><p class="text-gray-600">Catch type errors <strong>at compile time</strong> before they reach production. Better IDE autocomplete, self-documenting APIs, and safe refactoring across large codebases. The compiler flags the error the moment you misuse a type.</p>`,
       code: `// JavaScript — no type safety
 function add(a, b) { return a + b }
 add(2, '3')  // '23' — no warning
@@ -35,7 +35,7 @@ function first<T>(arr: T[]): T { return arr[0] }`,
     },
     {
       concept: 'Observable vs Promise',
-      explanation: 'Promise: one async value, eager (starts immediately), not cancellable, no operators. Observable: stream of 0-n values, lazy (starts on subscribe), cancellable (unsubscribe), composable with RxJS operators. Use Promises for single one-shot async ops; Observables for streams, retries, cancellation.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Promise</p><p class="mb-3 text-gray-600"><strong>One async value</strong>. <strong>Eager</strong> — starts executing immediately on creation. <strong>Not cancellable</strong>. No built-in operators. Simple and fine for one-shot async operations like a single HTTP call in vanilla JS.</p><p class="font-semibold text-gray-800 mb-1">Observable</p><p class="text-gray-600"><strong>Stream of 0–n values</strong>. <strong>Lazy</strong> — nothing happens until you <code>.subscribe()</code>. <strong>Cancellable</strong> via <code>.unsubscribe()</code>. Composable with RxJS operators (debounce, retry, switchMap). The right choice for streams, retries, cancellation, and reactive data flows in Angular.</p>`,
       code: `// Promise — eager, one value, not cancellable
 const p = fetch('/api/user')  // starts immediately
 p.then(r => r.json()).then(console.log)
@@ -56,7 +56,7 @@ this.searchInput$.pipe(
     },
     {
       concept: 'Angular Lifecycle Hooks — Full Order',
-      explanation: 'Hooks run in a fixed order. Know which ones run once vs every CD cycle. ngOnChanges runs before ngOnInit when @Input is present. ngOnDestroy is your cleanup hook — unsubscribe, clear timers.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Run Once</p><p class="mb-3 text-gray-600"><strong>ngOnChanges</strong>: before ngOnInit, then on every @Input change. <strong>ngOnInit</strong>: safe to use @Input values, make HTTP calls. <strong>ngAfterContentInit</strong>: ng-content projected. <strong>ngAfterViewInit</strong>: view + children rendered, safe to query DOM. <strong>ngOnDestroy</strong>: your cleanup hook — unsubscribe, clear timers.</p><p class="font-semibold text-gray-800 mb-1">Run Every CD Cycle</p><p class="text-gray-600"><strong>ngDoCheck</strong>: every cycle — avoid heavy logic here. <strong>ngAfterContentChecked</strong> and <strong>ngAfterViewChecked</strong>: after every content/view check. Keep these empty unless you have a specific reason.</p>`,
       code: `// Order of execution:
 // 1. constructor()          — DI only, no inputs yet
 // 2. ngOnChanges()          — @Input values set/changed (runs BEFORE ngOnInit, then on each change)
@@ -82,7 +82,7 @@ export class MyComponent implements OnInit, OnDestroy {
     },
     {
       concept: 'SPA vs PWA',
-      explanation: 'SPA (Single Page Application): loads once, navigates by swapping components — no full page reload. PWA (Progressive Web App): SPA + service worker + manifest = offline support, installable, push notifications. Every PWA is an SPA; not every SPA is a PWA.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">SPA — Single Page Application</p><p class="mb-3 text-gray-600">Loads once, navigates by <strong>swapping components</strong> without full page reloads. Faster navigation after initial load. Angular, React, and Vue are SPA frameworks.</p><p class="font-semibold text-gray-800 mb-1">PWA — Progressive Web App</p><p class="text-gray-600">SPA + <strong>service worker</strong> + <strong>web manifest</strong> = offline support, installable on the home screen, push notifications. Every PWA is an SPA — but not every SPA is a PWA. Add with <code>ng add @angular/pwa</code>.</p>`,
       code: `// PWA additions over a plain SPA:
 // 1. web app manifest
 {
@@ -103,7 +103,7 @@ self.addEventListener('fetch', event => {
     },
     {
       concept: 'Data Binding Types',
-      explanation: 'Interpolation {{ }}: component → DOM (one-way, text). Property binding [prop]: component → DOM (one-way, any value). Event binding (event): DOM → component (one-way, events). Two-way [(ngModel)]: both directions simultaneously.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">One-Way — Component → DOM</p><p class="mb-3 text-gray-600"><strong>Interpolation <code>{{ }}</code></strong>: outputs text. <strong>Property binding <code>[prop]</code></strong>: binds any value — expressions, objects, booleans. Use <code>[disabled]="isLoading"</code> not <code>disabled="{{ isLoading }}"</code>.</p><p class="font-semibold text-gray-800 mb-1">One-Way — DOM → Component</p><p class="mb-3 text-gray-600"><strong>Event binding <code>(event)</code></strong>: calls a component method when a DOM event fires. Passes <code>$event</code> with the native event object.</p><p class="font-semibold text-gray-800 mb-1">Two-Way — <code>[(ngModel)]</code></p><p class="text-gray-600">Combines <code>[ngModel]</code> and <code>(ngModelChange)</code> — both directions simultaneously. Sugar syntax: <code>[(x)]</code> is short for <code>[x]="val" (xChange)="val = $event"</code>.</p>`,
       code: `<!-- Interpolation — string output only -->
 <h1>{{ title }}</h1>
 
@@ -121,7 +121,7 @@ self.addEventListener('fetch', event => {
     },
     {
       concept: 'Component Communication',
-      explanation: '@Input/@Output: parent↔child. ViewChild/ContentChild: parent→child DOM access. Shared service with BehaviorSubject: sibling/any components. NgRx/state management: large-scale shared state.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Parent ↔ Child</p><p class="mb-3 text-gray-600"><strong>@Input</strong>: parent pushes data down. <strong>@Output + EventEmitter</strong>: child emits events up. <strong>ViewChild / ContentChild</strong>: parent gets a direct reference to a child component or DOM element.</p><p class="font-semibold text-gray-800 mb-1">Sibling / Cross-Component</p><p class="text-gray-600"><strong>Shared service with BehaviorSubject</strong>: any component can read/write — use for feature-level state. <strong>NgRx / signals store</strong>: large-scale shared state with time-travel debugging, selectors, and effects.</p>`,
       code: `// Parent → Child: @Input
 @Input() user!: User
 
@@ -139,7 +139,7 @@ class UserStore {
     },
     {
       concept: 'Pipes — Pure vs Impure',
-      explanation: 'Pure pipes (default): run only when the input reference changes — memoized. Impure pipes: run on every change detection cycle — expensive. Use impure only when you must react to internal object mutations.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Pure Pipes (default)</p><p class="mb-3 text-gray-600">Only re-run when the <strong>input reference changes</strong> — effectively memoized. Angular skips the pipe if the same reference is passed again. Always prefer pure pipes for data transformations in templates.</p><p class="font-semibold text-gray-800 mb-1">Impure Pipes</p><p class="text-gray-600">Run on <strong>every change detection cycle</strong> — expensive. Use only when you must react to internal object mutations (e.g., a mutable array that changes in place). Set <code>pure: false</code> explicitly and document why.</p>`,
       code: `// Pure pipe — only runs when 'items' reference changes
 @Pipe({ name: 'activeFilter', pure: true })
 export class ActiveFilterPipe implements PipeTransform {
@@ -157,7 +157,7 @@ export class AsyncStatusPipe implements PipeTransform {
     },
     {
       concept: 'Directives — Three Types',
-      explanation: 'Component: directive with a template (most common). Structural: change DOM structure (*ngIf, *ngFor, *ngSwitch — asterisk is syntactic sugar for <ng-template>). Attribute: change appearance/behaviour without adding/removing elements ([ngClass], [ngStyle], custom).',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Component Directive</p><p class="mb-2 text-gray-600">A directive <strong>with a template</strong>. The most common type — every <code>@Component</code> is technically a directive.</p><p class="font-semibold text-gray-800 mb-1">Structural Directive</p><p class="mb-2 text-gray-600"><strong>Adds or removes DOM nodes</strong>. <code>*ngIf</code>, <code>*ngFor</code>, <code>*ngSwitch</code>. The asterisk is sugar for <code>&lt;ng-template&gt;</code>.</p><p class="font-semibold text-gray-800 mb-1">Attribute Directive</p><p class="text-gray-600"><strong>Modifies appearance or behaviour</strong> without changing the DOM structure. <code>[ngClass]</code>, <code>[ngStyle]</code>, and custom directives like <code>[appHighlight]</code>.</p>`,
       code: `// Structural directive — creates/destroys DOM
 <div *ngIf="isLoggedIn">Dashboard</div>
 <!-- Sugar for: -->
@@ -174,7 +174,7 @@ export class HighlightDirective {
     },
     {
       concept: 'Signals & Computed Signals (Angular 16+)',
-      explanation: 'Signals are reactive primitives — a signal holds a value and notifies any consumers when it changes. Computed signals derive values from other signals and are memoized. Together they enable fine-grained reactivity without Zone.js.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Signals</p><p class="mb-3 text-gray-600">Reactive primitives — a signal <strong>holds a value</strong> and automatically notifies any consumers when it changes. Read with <code>count()</code>, write with <code>count.set(n)</code> or <code>count.update(fn)</code>.</p><p class="font-semibold text-gray-800 mb-1">Computed & Effect</p><p class="text-gray-600"><strong>Computed signals</strong> derive values from other signals and are <strong>memoized</strong> — they only recompute when their dependencies change. <strong>Effects</strong> run side-effects when dependencies change. Together they enable fine-grained reactivity <strong>without Zone.js</strong>.</p>`,
       code: `import { signal, computed, effect } from '@angular/core'
 
 // Signal — writable reactive value
@@ -195,7 +195,7 @@ effect(() => console.log('count is', count()))
     },
     {
       concept: 'Standalone Components & Deferrable Views',
-      explanation: 'Standalone: components without NgModule — declare imports directly in @Component. Simplifies architecture. When NOT to use: in large existing codebases mid-migration, or when you need module-level providers. Deferrable views (@defer): lazy-load template blocks on interaction, viewport entry, or idle.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Standalone Components</p><p class="mb-3 text-gray-600">Components without <code>NgModule</code> — declare imports directly in <code>@Component({ imports: [] })</code>. Simpler architecture, easier lazy-loading. The Angular team's recommended approach for new code. Avoid mid-migration in large codebases — the mix of module + standalone can be confusing.</p><p class="font-semibold text-gray-800 mb-1">Deferrable Views (@defer)</p><p class="text-gray-600">Lazy-load template blocks on a <strong>trigger</strong>: <code>on viewport</code>, <code>on interaction</code>, or <code>on idle</code>. The component's JS chunk is only downloaded when the trigger fires. Pair with <code>@loading</code> and <code>@placeholder</code> for smooth UX.</p>`,
       code: `// Standalone component — no module needed
 @Component({
   standalone: true,
@@ -215,7 +215,7 @@ export class ProfilePage {}
     },
     {
       concept: 'ng-deep, Style Encapsulation & Typed Forms',
-      explanation: 'Angular components have ViewEncapsulation.Emulated by default — styles are scoped with attribute selectors. ng-deep pierces encapsulation (deprecated, use ::ng-deep sparingly). Typed Reactive Forms (Angular 14+): FormControl<string>, FormGroup — fully typed, no more .value as any.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Style Encapsulation</p><p class="mb-3 text-gray-600">Angular uses <strong>ViewEncapsulation.Emulated</strong> by default — styles are scoped by adding unique attribute selectors. <code>::ng-deep</code> pierces encapsulation to style child or third-party components. Use sparingly and only inside <code>:host</code> to limit blast radius.</p><p class="font-semibold text-gray-800 mb-1">Typed Reactive Forms (Angular 14+)</p><p class="text-gray-600"><code>FormControl&lt;string&gt;</code>, <code>FormGroup</code> — fully typed. <code>.value</code> is no longer <code>any</code>. Use <code>nonNullable: true</code> to strip null from the type. Catches form field mismatches at compile time.</p>`,
       code: `// ng-deep — use only for 3rd party component styling
 :host ::ng-deep .mat-button { color: red; }
 

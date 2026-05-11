@@ -16,8 +16,7 @@ export const topic: IInterviewTopic = {
   cheatSheet: [
     {
       concept: "Type vs Interface — When to Use Which",
-      explanation:
-        "Use interface for object shapes that might be extended or implemented. Use type for unions, intersections, mapped types, and anything that can't be expressed as an interface.",
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Use interface when…</p><p class="mb-3 text-gray-600">You're defining an <strong>object shape</strong> that might be extended by other interfaces or implemented by a class. Interfaces support declaration merging — you can add fields by re-declaring the same interface.</p><p class="font-semibold text-gray-800 mb-1">Use type when…</p><p class="text-gray-600">You need a <strong>union</strong> (<code>A | B</code>), <strong>intersection</strong> (<code>A & B</code>), <strong>mapped type</strong>, or any composition that can't be expressed as a plain interface. Types are more powerful for complex compositions.</p>`,
       code: `// interface — extendable, implementable
 interface User { id: number; name: string }
 interface Admin extends User { role: string }
@@ -29,8 +28,7 @@ type ApiResponse<T> = { data: T; error: null } | { data: null; error: string }`,
     },
     {
       concept: "unknown vs any",
-      explanation:
-        "any turns off type checking entirely. unknown is type-safe — you must narrow it before use. Always prefer unknown for values whose type you don't know yet (API responses, caught errors).",
+      explanation: `<p class="font-semibold text-gray-800 mb-1">any — escape hatch</p><p class="mb-3 text-gray-600"><code>any</code> turns off type checking entirely for that value. You can call any method, access any property — the compiler trusts you blindly. Use only in migration scenarios as a temporary placeholder.</p><p class="font-semibold text-gray-800 mb-1">unknown — type-safe alternative</p><p class="text-gray-600"><code>unknown</code> means "I don't know the type yet." TypeScript <strong>forces you to narrow</strong> the type (via <code>typeof</code>, <code>instanceof</code>, or a type guard) before you can use the value. Always prefer <code>unknown</code> for API responses and caught errors.</p>`,
       code: `// any — no safety, compiler trusts you blindly
 function bad(value: any) {
   value.nonExistent.method()  // compiles fine, crashes at runtime
@@ -50,8 +48,7 @@ catch (err) {
     },
     {
       concept: "Discriminated Unions",
-      explanation:
-        "A union where each member has a literal type field. TypeScript can narrow the type inside an if/switch by checking that field — no casting needed.",
+      explanation: `<p class="font-semibold text-gray-800 mb-1">What It Is</p><p class="mb-3 text-gray-600">A union where each member has a <strong>shared literal type field</strong> (a "discriminant" like <code>kind</code> or <code>type</code>) with a unique value per member.</p><p class="font-semibold text-gray-800 mb-1">Why It's Powerful</p><p class="text-gray-600">TypeScript narrows the type inside an <code>if</code> or <code>switch</code> by checking the discriminant field — <strong>no casting needed</strong>. Add a new union member and every unhandled <code>switch</code> branch becomes a compile error (exhaustiveness checking).</p>`,
       code: `type Shape =
   | { kind: 'circle';    radius: number }
   | { kind: 'rectangle'; width: number; height: number }
@@ -67,8 +64,7 @@ function area(s: Shape): number {
     },
     {
       concept: "Utility Types You Must Know",
-      explanation:
-        "Partial, Required, Readonly, Pick, Omit, Record, ReturnType, Parameters — built-in mapped/conditional types that eliminate repetitive type definitions.",
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Object Shape Utilities</p><p class="mb-3 text-gray-600"><code>Partial&lt;T&gt;</code> makes all fields optional. <code>Required&lt;T&gt;</code> makes all required. <code>Readonly&lt;T&gt;</code> prevents mutation. <code>Pick&lt;T, K&gt;</code> keeps only listed keys. <code>Omit&lt;T, K&gt;</code> removes listed keys.</p><p class="font-semibold text-gray-800 mb-1">Dictionary & Inference Utilities</p><p class="text-gray-600"><code>Record&lt;K, V&gt;</code> builds a typed dictionary. <code>ReturnType&lt;typeof fn&gt;</code> infers a function's return type. <code>Parameters&lt;typeof fn&gt;</code> infers its argument tuple. These eliminate repetitive type definitions and keep types in sync with their sources automatically.</p>`,
       code: `interface User { id: number; name: string; email: string }
 
 type UpdateUser  = Partial<User>          // all fields optional
@@ -81,8 +77,7 @@ type FetchResult = ReturnType<typeof fetchUser>`,
     },
     {
       concept: "as const and Literal Types",
-      explanation:
-        "Without as const, TypeScript widens array and object literals to broad types. as const freezes the type to the exact literal values.",
+      explanation: `<p class="font-semibold text-gray-800 mb-1">The Problem — Type Widening</p><p class="mb-3 text-gray-600">Without <code>as const</code>, TypeScript widens array and object literals to broad types: <code>['admin', 'editor']</code> becomes <code>string[]</code>, losing all literal information.</p><p class="font-semibold text-gray-800 mb-1">as const — Freeze to Literals</p><p class="text-gray-600"><code>as const</code> freezes the type to the <strong>exact literal values</strong> and marks everything <code>readonly</code>. The array becomes <code>readonly ["admin", "editor"]</code> and you can derive a union type with <code>typeof roles[number]</code>.</p>`,
       code: `// Without as const — widened to string[]
 const roles = ['admin', 'editor', 'viewer']
 // roles: string[]

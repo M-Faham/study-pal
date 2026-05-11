@@ -16,7 +16,7 @@ export const topic: IInterviewTopic = {
   cheatSheet: [
     {
       concept: 'HTTP Status Codes',
-      explanation: '5 ranges: 1xx informational, 2xx success, 3xx redirect, 4xx client error, 5xx server error. Know the key ones: 200 OK, 201 Created, 204 No Content, 301/302 redirect, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable, 429 Rate Limited, 500 Server Error, 503 Unavailable.',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">The Five Ranges</p><p class="mb-3 text-gray-600"><strong>1xx</strong> informational, <strong>2xx</strong> success, <strong>3xx</strong> redirect, <strong>4xx</strong> client error, <strong>5xx</strong> server error.</p><p class="font-semibold text-gray-800 mb-1">Must-Know Codes</p><p class="text-gray-600"><strong>200</strong> OK, <strong>201</strong> Created (POST + Location header), <strong>204</strong> No Content (DELETE). <strong>401</strong> unauthenticated → login redirect, <strong>403</strong> forbidden → permission toast. <strong>422</strong> validation failed → form field errors, <strong>429</strong> rate limited → backoff. <strong>500/503</strong> server error → retry with backoff + Sentry log.</p>`,
       code: `// 2xx — Success
 200 OK            // GET, PUT, PATCH — standard success
 201 Created       // POST that creates a resource — return Location header
@@ -44,7 +44,7 @@ export const topic: IInterviewTopic = {
     },
     {
       concept: 'Status-Based Error Handling Strategy',
-      explanation: 'Split error handling between a global interceptor (codes that always have the same response) and local component handlers (codes where the UX depends on context).',
+      explanation: `<p class="font-semibold text-gray-800 mb-1">Global Interceptor</p><p class="mb-3 text-gray-600">Handles codes that <strong>always produce the same UI response</strong>: <code>401</code> → redirect to login, <code>403</code> → permission denied toast, <code>5xx</code> → generic error toast + Sentry, <code>429</code> → rate limit toast.</p><p class="font-semibold text-gray-800 mb-1">Component-Level Handler</p><p class="text-gray-600">Handles codes where the <strong>UX depends on context</strong>: <code>422</code> → map field errors to the owning form, <code>404</code> → show inline empty state with a CTA, <code>409</code> → show the specific conflict message. Re-throw after handling so the interceptor can still observe.</p>`,
       code: `// Global interceptor — same response everywhere
 interceptor: {
   401 → clear token, redirect to /login
@@ -71,8 +71,7 @@ this.userService.create(dto).pipe(
     },
     {
       concept: "Service Layer Pattern",
-      explanation:
-        "Never call HTTP directly from components. Wrap all API calls in a service class that hides the transport layer. Components call the service; the service calls HTTP.",
+      explanation: `<p class="font-semibold text-gray-800 mb-1">The Pattern</p><p class="mb-3 text-gray-600">Never call HTTP directly from components. Wrap all API calls in a <strong>service class</strong> that hides the transport layer — components call the service method, the service calls HTTP.</p><p class="font-semibold text-gray-800 mb-1">Why It Matters</p><p class="text-gray-600">Decouples components from the URL structure, response shape, and transport. In tests, <strong>mock the service</strong> — no HTTP needed. If the API changes, update one service, not every component that uses it.</p>`,
       code: `@Injectable({ providedIn: 'root' })
 export class ProductService {
   private readonly api = inject(HttpClient)
@@ -93,8 +92,7 @@ export class ProductService {
     },
     {
       concept: "REST vs GraphQL Trade-offs",
-      explanation:
-        "REST is simple, cacheable, and well-understood. GraphQL eliminates over/under-fetching and is powerful for complex data graphs. Choose REST for simple CRUD; consider GraphQL when clients have wildly different data needs.",
+      explanation: `<p class="font-semibold text-gray-800 mb-1">REST</p><p class="mb-3 text-gray-600">Simple, <strong>HTTP-cache-friendly</strong>, and universally understood. Fixed response shapes — clients get all fields whether they need them or not. Right for simple CRUD and public APIs.</p><p class="font-semibold text-gray-800 mb-1">GraphQL</p><p class="text-gray-600">Client specifies <strong>exactly what fields it needs</strong> — eliminates over- and under-fetching. Powerful for complex data graphs and when multiple clients (web, mobile) have very different data requirements. More complexity upfront (schema, resolvers, tooling).</p>`,
       code: `// REST — fixed response shape
 GET /users/1          → { id, name, email, role, createdAt, ... }
 // Client gets everything whether it needs it or not
